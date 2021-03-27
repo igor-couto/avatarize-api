@@ -9,11 +9,17 @@ namespace avatarize.Services
 {
     public class ImageService
     {
+        private readonly SettingsService _settingsService;
+
+        public ImageService(SettingsService settingsService) 
+        {
+            _settingsService = settingsService;
+        }
+
         public string MergeImages(string overlayImageName, string bottomImageName)
         {
-            var currentPath = Directory.GetCurrentDirectory();
-            var bottomImage = Image.FromFile(Path.GetFullPath(currentPath + "\\Images\\Skin\\" + bottomImageName + ".png"));
-            var overlayImage = Image.FromFile(Path.GetFullPath(currentPath + "\\Images\\Clothes\\" + overlayImageName + ".png"));
+            var bottomImage = Image.FromFile(_settingsService.SkinPath + bottomImageName + ".png");
+            var overlayImage = Image.FromFile(_settingsService.ClothesPath + overlayImageName + ".png");
 
             var generatedImage = bottomImage;
             var graphics = Graphics.FromImage(generatedImage);
