@@ -16,7 +16,7 @@ namespace avatarize.Controllers
         public IActionResult Get(string input)
         {
             if (string.IsNullOrWhiteSpace(input))
-                return BadRequest();
+                return BadRequest("The input cannot be empty");
 
             return Ok(_avatarGenerationService.GenerateAvatar(input));
         }
