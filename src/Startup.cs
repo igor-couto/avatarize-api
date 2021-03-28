@@ -25,7 +25,7 @@ namespace avatarize
             services.AddTransient<AvatarGenerationService>();
             services.AddTransient<HashService>();
             services.AddTransient<ImageService>();
-            services.AddSingleton<SettingsService>();
+            services.AddSingleton<AssetsService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

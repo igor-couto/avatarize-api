@@ -1,33 +1,37 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using Image = System.Drawing.Image;
 
 namespace avatarize.Services
 {
     public class ImageService
     {
-        private readonly SettingsService _settingsService;
-
-        public ImageService(SettingsService settingsService) 
+        public virtual string GenerateBase64AvatarImage(List<Image> images) 
         {
-            _settingsService = settingsService;
-        }
-
-        public string MergeImages(string overlayImageName, string bottomImageName)
-        {
-            var bottomImage = Image.FromFile(_settingsService.SkinPath + bottomImageName + ".png");
-            var overlayImage = Image.FromFile(_settingsService.ClothesPath + overlayImageName + ".png");
-
-            var generatedImage = bottomImage;
-            var graphics = Graphics.FromImage(generatedImage);
-
-            graphics.DrawImage(overlayImage, 0, 0, overlayImage.Width, overlayImage.Height);
+            var generatedImage = MergeImages(images);
 
             generatedImage = ResizeImage(generatedImage, 200, 200);
 
+            return ConvertToBase64String(generatedImage);
+        }
+
+        private Image MergeImages(List<Image> images) 
+        {
+            var generatedImage = (Image) images.First().Clone();
+            var graphics = Graphics.FromImage(generatedImage);
+
+            foreach (var image in images) 
+                graphics.DrawImage(image, 0, 0, image.Width, image.Height);
+            
+            return generatedImage;
+        }
+
+        private string ConvertToBase64String(Image generatedImage) { 
             using var memoryStream = new MemoryStream();
             generatedImage.Save(memoryStream, ImageFormat.Png);
             var imageBytes = memoryStream.ToArray();

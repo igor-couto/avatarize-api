@@ -2,7 +2,7 @@
 {
     public class HashService
     {
-        public int GetHash(string input) => SDBMHash(input);
+        public virtual int GetHash(string input) => SDBMHash(input);
         
         private int SDBMHash(string input)
         {

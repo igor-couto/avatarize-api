@@ -14,7 +14,7 @@ namespace Avatarize_Tests.Controllers
         private AvatarGenerationService _avatarGenerationService;
 
         [SetUp]
-        public void SetUp() 
+        public void SetUp()
         {
             _avatarGenerationService = A.Fake<AvatarGenerationService>();
             _avatarController = new AvatarController(_avatarGenerationService);
@@ -28,7 +28,7 @@ namespace Avatarize_Tests.Controllers
         public void ShouldNotCallGenerateAvatarWhenInputIsEmpty(string input)
         {
             _avatarController.Get(input);
-            A.CallTo( () => _avatarGenerationService.GenerateAvatar(input)).MustNotHaveHappened();
+            A.CallTo(() => _avatarGenerationService.GenerateAvatar(input)).MustNotHaveHappened();
         }
 
         [Test]
@@ -50,37 +50,40 @@ namespace Avatarize_Tests.Controllers
         }
 
         [Test]
-        public void ShouldCallGenerateAvatar() 
+        public void ShouldCallGenerateAvatar()
         {
             var input = Faker.Person.FullName;
 
             _avatarController.Get(input);
 
-            A.CallTo( () => _avatarGenerationService.GenerateAvatar(input)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _avatarGenerationService.GenerateAvatar(input)).MustHaveHappenedOnceExactly();
         }
 
-        [Test]
-        public void ShouldReturnOkWithGeneratedImage()
+        public class CompleteTest : BaseTests
         {
-            var settingsService = new SettingsService();
-            var imageService = new ImageService(settingsService);
-            var hashService = new HashService();
-            var avatarGenerationService = new AvatarGenerationService(hashService, imageService, settingsService);
+            [Test]
+            public void ShouldReturnOkWithGeneratedImage()
+            {
+                var assetsService = new AssetsService();
+                var imageService = new ImageService();
+                var hashService = new HashService();
+                var avatarGenerationService = new AvatarGenerationService(hashService, imageService, assetsService);
 
-            var avatarController = new AvatarController(avatarGenerationService);
+                var avatarController = new AvatarController(avatarGenerationService);
 
-            var input = "Igor Couto";
-            var expectedBase64Image = "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";
+                var input = "Igor Couto";
+                var expectedBase64Image = "iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAneSURBVHhe7ZwxjmVJFQVb7AKwWAEOPhYGKxgHr9kAFuBgtwMm/ogNICGNxRrQ7IGFNM6R/lEqVNTVz656WS9CCvPmy7z/HKuk+iQiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIich7/+vG/X5/1r//+zzf3T//44UW/+9v3/9c8WeT1UOCnUqB3S6VoqRCrebLI66HAT6VA75ZK0VIhVvNkkddDgZ9Kgd4tlaKlQqzmySKvhwI/lQK9WypFS4VYzZNFXg8FfioFerdUipYKsZoni7weCvxUCvRuqRQtFWI1TxZ5PRT4qRTo3VIpWirEap4s8oACPZUCezWpNKtUmjYrkztBgZ9KgbyaVIhVKkWblcmdoMBPpUBeTSrEKpWizcrkTlDgp1IgryYVYpVK0WZlcico8FMpkFeTCrFKpWizMrkTFPipFMirSYVYpVK0WZncCQr8VArk1aRCrFIp2qxM7gQFfioF8mpSIVapFG1WJneCAj+VAnk1qRCrVIo2K5OPBAV6IoXto0qlaak0bVYuJ0Ghn0hB+qhSKVoqRZuVy0lQ6CdSkD6qVIqWStFm5XISFPqJFKSPKpWipVK0WbmcBIV+IgXpo0qlaKkUbVYuJ0Ghn0hB+qhSKVoqRZuVy0lQ6CdSkD6qVIqWStFm5XISFPqJFKSPKpWipVK0WbmcBIV+4j//8ttvLoX1PaRStFSKNiuXk6DQT6RA75bC+h5SKVoqRZuVy0lQ6CdSoHdLYX0PqRQtlaLNyuUkKPQTKdC7pbC+h1SKlkrRZuVyEhT6iRTo3VJY30MqRUulaLNyOQkK/UQK9G4prO8hlaKlUrRZuZwEhX4iBXq3FNb3kErRUinarFxOgkI/kQK9Wwrre0ilaKkUbVYuJ0Ghn0hBUpZKtUrFavOzyVtBoZ9IQVCWCrFKpWjzs8lbQaGfSEFQlgqxSqVo87PJW0Ghn0hBUJYKsUqlaPOzyVtBoZ9IQVCWCrFKpWjzs8lbQaGfSEFQlgqxSqVo87PJW0Ghn0hBUJYKsUqlaPOzyVtBoZ9IQVCWCrFKpWjzs8lbQaGfSEFQlgqxSqVo87PJW0F/uVb2+z/+5kX//N2vXjQrl5OgIChLpWipFG1WLidBQVCWStFSKdqsXE6CgqAslaKlUrRZuZwEBUFZKkVLpWizcjkJCoKyVIqWStFm5XISFARlqRQtlaLNyuUkKAjKUilaKkWblctJUBDaX/z8py9KM1eU7t7SzCqVoqVStFm5nAQFoaUwtTRzRenuLc2sUilaKkWblctJUBBaClNLM1eU7t7SzCqVoqVStFm5nAQFoaUwtTRzRenuLc2sUilaKkWblctJUBBaClNLM1eU7t7SzCqVoqVStFm5nAQFoaUwtTRzRenuLc2sUilaKkWblctJUBBaClNLM1eU7t7SzCqVoqVStFm5nAQFoaUwtTRzRenuLc2sUilaKkWblctJUBCUpVK0VIo2K5eToCAoS6VoqRRtVi4nQUFQlkrRUinarFxOgoKgLJWipVK0WbmcBAVBWSpFS6Vos3I5CQqCslSKlkrRZuVyEhQEZakULZWizcrlJCgIylIpWipFm5XLSVAQlKVStFSKNiuXk6Ag7Pbvv//1N5e+u1sqRUulaLNyOQkKwm4p0Lul7+6WStFSKdqsXE6CgrBbCvRu6bu7pVK0VIo2K5eToCDslgK9W/rubqkULZWizcrlJCgIu6VA75a+u1sqRUulaLNyOQkKwm4p0Lul7+6WStFSKdqsXE6CgrBbCvRu6bu7pVK0VIo2K5eToCDslgK9W/rubqkULZWizcrlJCgId5QCP5VK0WblchIUljtKgZ9KpWizcjkJCssdpcBPpVK0WbmcBIXljlLgp1Ip2qxcToLCckcp8FOpFG1WLidBYbmjFPipVIo2K5eToLDcUQr8VCpFm5XLSVBY7igFfiqVos3K5SNBYTpRCnRLgZ6alcmdoLCdKJWipcBPzcrkTlDYTpRK0VLgp2ZlcicobCdKpWgp8FOzMrkTFLYTpVK0FPipWZncCQrbiVIpWgr81KxM7gSF7USpFC0FfmpWJneCwnaiVIqWAj81K5M7QWE7USpFS4GfmpWJ7IUCPZVC31Kg21xF5HpQ4KdSKVoqRZuriFwPCvxUKkVLpWhzFZHrQYGfSqVoqRRtriJyPSjwU6kULZWizVVErgcFfiqVoqVStLmKyPWgwE+lUrRUijZXEbkeFPipVIqWStHmKiJvz5cvX76+5OfPn1+UZlZprqWZlmZW8xyRvVAgWwpjSzOrNNfSTEszq3mOyF4okC2FsaWZVZpraaalmdU8R2QvFMiWwtjSzCrNtTTT0sxqniOyFwpkS2FsaWaV5lqaaWlmNc8R2QsFsqUwtjSzSnMtzbQ0s5rniOyFAtlSGFuaWaW5lmZamlnNc0T2QoFsKYwtzazSXEszLc2s5jkie6FATqSwrtLcbum7bZ4rMoPCNpHCuEpzu6XvtnmuyAwK20QK4yrN7Za+2+a5IjMobBMpjKs0t1v6bpvnisygsE2kMK7S3G7pu22eKzKDwjaRwrhKc7ul77Z5rsgMCttECuMqze2WvtvmuSIzKGwTKYyrNLdb+m6b54rMoLBNpDCu0txu6bttnivygIKySmG7mnTvVZprsxKRBxSkVQrT1aR7r9Jcm5WIPKAgrVKYribde5Xm2qxE5AEFaZXCdDXp3qs012YlIg8oSKsUpqtJ916luTYrEXlAQVqlMF1NuvcqzbVZicgDCtIqhelq0r1Xaa7NSkQeUJBWKUxXk+69SnNtViLygP7L4SqF6UTpbW1WIvKAgrJKYTtRelublYg8oKCsUthOlN7WZiUiDygoqxS2E6W3tVmJyAMKyiqF7UTpbW1WIvKAgrJKYTtRelublYg8oKCsUthOlN7WZiUiDygoqxS2E6W3tVmJyAwK24nmOSJ7obCdaJ4jshcK24nmOSJ7obCdaJ4jshcK24nmOSJ7obCdaJ4jshcK24nmOSJ7obCdaJ4jshcK24nmOSJ7+ckffvj6EcxzRPZCYTvRPEdkLxS2E81zRPZCYTvRPEdkLxS2E81zRPZCYTvRPEdkLxS2E81zRPZCYTvRPEdkL7/75c++PmOOeQo6d2qOEtkLhW1ijnkKOndqjhLZC4VtYo55Cjp3ao4S2QuFbWKOeQo6d2qOEtkLhW1ijnkKOndqjhLZC4VtYo55Cjp3ao4S2QuFbWKOeQo6d2qOEtkLhW1ijnkKOndqjhLZC4VtYo55Cjp3ao4S2QuFbWKOeQo6d2qOEtkLhW1ijnkKOndqjhLZC4VtYo55Cjp3ao6SN+fTp/8BFm8DkTxHt+IAAAAASUVORK5CYII=";
 
-            var response = avatarController.Get(input) as OkObjectResult;
+                var response = avatarController.Get(input) as OkObjectResult;
 
-            response?.StatusCode
-                .Should()
-                .Be(StatusCodes.Status200OK);
+                response?.StatusCode
+                    .Should()
+                    .Be(StatusCodes.Status200OK);
 
-            response?.Value
-                .Should()
-                .BeEquivalentTo(expectedBase64Image);
+                response?.Value
+                    .Should()
+                    .BeEquivalentTo(expectedBase64Image);
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace avatarize.Services
 {
@@ -6,13 +8,13 @@ namespace avatarize.Services
     {
         private readonly HashService _hashService;
         private readonly ImageService _imageService;
-        private readonly SettingsService _settingsService;
+        private readonly AssetsService _assetsService;
 
-        public AvatarGenerationService(HashService hashService, ImageService imageService, SettingsService settingsService)
+        public AvatarGenerationService(HashService hashService, ImageService imageService, AssetsService assetsService)
         {
             _hashService = hashService;
             _imageService = imageService;
-            _settingsService = settingsService;
+            _assetsService = assetsService;
         }
 
         public virtual string GenerateAvatar(string input)
@@ -20,10 +22,13 @@ namespace avatarize.Services
             var seed = _hashService.GetHash(input);
             var random = new Random(seed);
 
-            var skin = random.Next(1, _settingsService.SkinCount);
-            var clothing = random.Next(1, _settingsService.ClothesCount);
+            var images = new List<Image>()
+            {
+                _assetsService.Skins[random.Next(1, _assetsService.Skins.Count)],
+                _assetsService.Clothes[random.Next(1, _assetsService.Clothes.Count)]
+            };
 
-            return _imageService.MergeImages(clothing.ToString(), skin.ToString());
+            return _imageService.GenerateBase64AvatarImage(images);
         }
     }
 }
