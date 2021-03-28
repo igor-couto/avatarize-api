@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>AvatarizeTests</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+	  <PackageReference Include="AutoBogus.FakeItEasy" Version="2.13.0" />
+	  <PackageReference Include="FakeItEasy" Version="7.0.0" />
+	  <PackageReference Include="FluentAssertions" Version="5.10.3" />
+	  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
+	  <PackageReference Include="NUnit" Version="3.13.1" />
+	  <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\src\Avatarize.csproj" />
+  </ItemGroup>
+</Project>

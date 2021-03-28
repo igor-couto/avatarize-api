@@ -20,5 +20,5 @@ namespace avatarize.Controllers
 
             return Ok(_avatarGenerationService.GenerateAvatar(input));
         }
-    }    
+    }  
 }

@@ -18,11 +18,11 @@ namespace avatarize.Services
             var currentPath = Directory.GetCurrentDirectory();
 
             SkinPath = currentPath + "\\Images\\Skin\\";
-            HairPath = currentPath + "\\Images\\Hair\\";
+            //HairPath = currentPath + "\\Images\\Hair\\";
             ClothesPath = currentPath + "\\Images\\Clothes\\";
 
             SkinCount = Directory.GetFiles(SkinPath, "*", SearchOption.TopDirectoryOnly).Length;
-            HairCount = Directory.GetFiles(HairPath, "*", SearchOption.TopDirectoryOnly).Length;
+            //HairCount = Directory.GetFiles(HairPath, "*", SearchOption.TopDirectoryOnly).Length;
             ClothesCount = Directory.GetFiles(ClothesPath, "*", SearchOption.TopDirectoryOnly).Length;
         }
     }

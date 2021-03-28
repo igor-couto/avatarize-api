@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 
 namespace avatarize.Services
 {
@@ -16,7 +15,7 @@ namespace avatarize.Services
             _settingsService = settingsService;
         }
 
-        public string GenerateAvatar(string input)
+        public virtual string GenerateAvatar(string input)
         {
             var seed = _hashService.SDBMHash(input);
             var random = new Random(seed);
