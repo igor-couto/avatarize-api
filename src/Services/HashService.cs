@@ -2,12 +2,9 @@
 {
     public class HashService
     {
-        public int GetHash(string input) 
-        {
-            return SDBMHash(input);
-        }
-
-        public int SDBMHash(string input)
+        public int GetHash(string input) => SDBMHash(input);
+        
+        private int SDBMHash(string input)
         {
             int hash = 0;
 

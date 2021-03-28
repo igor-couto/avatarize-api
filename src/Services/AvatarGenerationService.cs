@@ -17,7 +17,7 @@ namespace avatarize.Services
 
         public virtual string GenerateAvatar(string input)
         {
-            var seed = _hashService.SDBMHash(input);
+            var seed = _hashService.GetHash(input);
             var random = new Random(seed);
 
             var skin = random.Next(1, _settingsService.SkinCount);
