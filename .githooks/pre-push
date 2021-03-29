@@ -37,7 +37,7 @@ if [ $? -ne 0 ] ; then
 fi
 
 echo ""
-echo -e "${GREEN}Tudo ok!${NC}"
+echo -e "${GREEN}Pre push completed. Everything is OK${NC}"
 echo ""
 
 exit 0
