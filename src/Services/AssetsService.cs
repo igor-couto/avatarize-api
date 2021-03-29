@@ -22,7 +22,7 @@ namespace avatarize.Services
             var clothesPath = currentPath + "\\Images\\Clothes\\";
 
             var skinCount = Directory.GetFiles(skinPath, "*", SearchOption.TopDirectoryOnly).Length;
-            //var hairCount = Directory.GetFiles(hairPath, "*", SearchOption.TopDirectoryOnly).Length;
+            var hairCount = Directory.GetFiles(hairPath, "*", SearchOption.TopDirectoryOnly).Length;
             var clothesCount = Directory.GetFiles(clothesPath, "*", SearchOption.TopDirectoryOnly).Length;
 
             Skins = new List<Image>();
@@ -34,6 +34,12 @@ namespace avatarize.Services
 
             for (var i = 1; i <= clothesCount; i++)
                 Clothes.Add(Image.FromFile(clothesPath + i + ".png"));
+
+            for (var i = 1; i <= hairCount; i++)
+                Hairs.Add(Image.FromFile(hairPath + i + ".png"));
+
+            Background = Image.FromFile(currentPath + "\\Images\\" + "Background.png");
+            Frame = Image.FromFile(currentPath + "\\Images\\" + "Frame.png");
         }
     }
 }

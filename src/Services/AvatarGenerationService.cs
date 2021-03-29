@@ -24,8 +24,11 @@ namespace avatarize.Services
 
             var images = new List<Image>()
             {
+                _assetsService.Background,
                 _assetsService.Skins[random.Next(1, _assetsService.Skins.Count)],
-                _assetsService.Clothes[random.Next(1, _assetsService.Clothes.Count)]
+                _assetsService.Hairs[random.Next(1, _assetsService.Hairs.Count)],
+                _assetsService.Clothes[random.Next(1, _assetsService.Clothes.Count)],
+                _assetsService.Frame
             };
 
             return _imageService.GenerateBase64AvatarImage(images);
