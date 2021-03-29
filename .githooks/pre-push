@@ -1,0 +1,43 @@
+#!/bin/sh
+RED='\033[0;31m'
+GREEN='\033[1;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+echo ""
+echo -e "${YELLOW}Building project...${NC}"
+    
+DOTNET_CLI_TELEMETRY_OPTOUT=1
+DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
+
+cd src/
+
+dotnet build
+
+if [ $? -ne 0 ] ; then
+    echo ""
+	echo -e "${RED}Build failed. Please correct the problems before proceeding${NC}"
+	echo ""
+	exit 1
+fi
+
+echo ""
+echo -e "${YELLOW}Running unit tests...${NC}"
+echo ""
+	
+cd ../tests/
+
+dotnet test
+
+if [ $? -ne 0 ] ; then
+    echo ""
+	echo -e "${RED}One or more unit tests failed. Please correct them before uploading changes${NC}"
+	echo ""
+	exit 1
+fi
+
+echo ""
+echo -e "${GREEN}Tudo ok!${NC}"
+echo ""
+
+exit 0
