@@ -1,4 +1,5 @@
 using avatarize.Services;
+using Avatarize;
 using Microsoft.AspNetCore.Mvc;
 
 namespace avatarize.Controllers
@@ -13,12 +14,13 @@ namespace avatarize.Controllers
             =>  _avatarGenerationService = avatarGenerationService;
 
         [HttpGet]
-        public IActionResult Get(string input)
+        public IActionResult Get(
+            [FromQuery] AvatarQuery query)
         {
-            if (string.IsNullOrWhiteSpace(input))
+            if (string.IsNullOrWhiteSpace(query.Input))
                 return BadRequest("The input cannot be empty");
 
-            return Ok(_avatarGenerationService.GenerateAvatar(input));
+            return Ok(_avatarGenerationService.GenerateAvatar(query));
         }
     }  
 }

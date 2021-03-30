@@ -1,4 +1,5 @@
 ﻿using avatarize.Services;
+using Avatarize;
 using Avatarize_Tests;
 using FakeItEasy;
 using NUnit.Framework;
@@ -27,19 +28,55 @@ namespace AvatarizeTests.Services
         [Test]
         public void ShouldCallGetHash() 
         {
-            var input = Faker.Person.FullName;
-            _avatarGenerationService.GenerateAvatar(input);
+            var query = new AvatarQuery { Input = Faker.Person.FullName };
+            _avatarGenerationService.GenerateAvatar(query);
 
-            A.CallTo( () => _hashService.GetHash(input)).MustHaveHappenedOnceExactly();
+            A.CallTo( () => _hashService.GetHash(query.Input)).MustHaveHappenedOnceExactly();
         }
 
         [Test]
         public void ShouldCallGenerateBase64AvatarImage() 
         {
-            var input = Faker.Person.FullName;
-            _avatarGenerationService.GenerateAvatar(input);
+            var query = new AvatarQuery { Input = Faker.Person.FullName };
+            _avatarGenerationService.GenerateAvatar(query);
 
-            A.CallTo(() => _imageService.GenerateBase64AvatarImage(A<List<Image>>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _imageService.GenerateBase64AvatarImage(A<List<Image>>.Ignored, A<int>.Ignored)).MustHaveHappenedOnceExactly();
+        }
+
+        [Test]
+        public void ShouldCallGenerateBase64AvatarImageWithExpectedParameters()
+        {
+            var query = new AvatarQuery 
+            { 
+                Input = Faker.Person.FullName,
+                Background = true,
+                Frame = true,
+                Gradient = true,
+                Vignette = true,
+                Size = Faker.Random.Number(24, 1000)
+            };
+
+            var expectedImageArray = new List<Image>()
+            {
+                _assetsService.Background,
+                _assetsService.Gradient,
+                _assetsService.Vignette,
+                _assetsService.Frame
+
+            };
+
+            _avatarGenerationService.GenerateAvatar(query);
+
+            A.CallTo(() => _imageService
+                .GenerateBase64AvatarImage(
+                    A<List<Image>>.That.Matches(x => 
+                        x.Count == 7 &&
+                        Compare(_assetsService.Background, x[0]) &&
+                        Compare(_assetsService.Gradient, x[1]) &&
+                        Compare(_assetsService.Vignette, x[2]) &&
+                        Compare(_assetsService.Frame, x[6])),
+                    A<int>.That.Matches(x => Compare(query.Size, x) )))
+                .MustHaveHappenedOnceExactly();
         }
     }
 }

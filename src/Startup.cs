@@ -22,10 +22,10 @@ namespace avatarize
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "avatarize", Version = "v1" });
             });
 
+            services.AddSingleton(new AssetsService());
             services.AddTransient<AvatarGenerationService>();
             services.AddTransient<HashService>();
             services.AddTransient<ImageService>();
-            services.AddSingleton<AssetsService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

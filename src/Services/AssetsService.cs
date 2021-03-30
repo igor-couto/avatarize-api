@@ -12,34 +12,52 @@ namespace avatarize.Services
 
         public Image Background { get; }
         public Image Frame { get; }
+        public Image Gradient { get; }
+        public Image Vignette { get; }
 
-        public AssetsService() 
+        public AssetsService()
         {
             var currentPath = Directory.GetCurrentDirectory();
-
-            var skinPath = currentPath + "\\Images\\Skin\\";
-            var hairPath = currentPath + "\\Images\\Hair\\";
-            var clothesPath = currentPath + "\\Images\\Clothes\\";
-
-            var skinCount = Directory.GetFiles(skinPath, "*", SearchOption.TopDirectoryOnly).Length;
-            var hairCount = Directory.GetFiles(hairPath, "*", SearchOption.TopDirectoryOnly).Length;
-            var clothesCount = Directory.GetFiles(clothesPath, "*", SearchOption.TopDirectoryOnly).Length;
 
             Skins = new List<Image>();
             Hairs = new List<Image>();
             Clothes = new List<Image>();
 
-            for (var i = 1; i <= skinCount; i++) 
-                Skins.Add(Image.FromFile(skinPath + i + ".png"));
+            LoadSkins(currentPath);
+            LoadHairs(currentPath);
+            LoadClothes(currentPath);
+            
+            Background = Image.FromFile(currentPath + @"\Images\" + "Background.png");
+            Frame = Image.FromFile(currentPath + @"\Images\" + "Frame.png");
+            Gradient = Image.FromFile(currentPath + @"\Images\" + "Gradient.png");
+            Vignette = Image.FromFile(currentPath + @"\Images\" + "Vignette.png");
+        }
 
-            for (var i = 1; i <= clothesCount; i++)
-                Clothes.Add(Image.FromFile(clothesPath + i + ".png"));
+        private void LoadSkins(string currentPath) 
+        {
+            var skinPath = currentPath + "\\Images\\Skin\\";
+            var skinCount = Directory.GetFiles(skinPath, "*", SearchOption.TopDirectoryOnly).Length;
+            
+            for (var i = 1; i <= skinCount; i++)
+                Skins.Add(Image.FromFile(skinPath + i + ".png"));
+        }
+
+        private void LoadHairs(string currentPath) 
+        {
+            var hairPath = currentPath + "\\Images\\Hair\\";
+            var hairCount = Directory.GetFiles(hairPath, "*", SearchOption.TopDirectoryOnly).Length;
 
             for (var i = 1; i <= hairCount; i++)
                 Hairs.Add(Image.FromFile(hairPath + i + ".png"));
+        }
 
-            Background = Image.FromFile(currentPath + "\\Images\\" + "Background.png");
-            Frame = Image.FromFile(currentPath + "\\Images\\" + "Frame.png");
+        private void LoadClothes(string currentPath)
+        {
+            var clothesPath = currentPath + "\\Images\\Clothes\\";
+            var clothesCount = Directory.GetFiles(clothesPath, "*", SearchOption.TopDirectoryOnly).Length;
+
+            for (var i = 1; i <= clothesCount; i++)
+                Clothes.Add(Image.FromFile(clothesPath + i + ".png"));
         }
     }
 }

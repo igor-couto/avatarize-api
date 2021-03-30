@@ -11,23 +11,24 @@ namespace avatarize.Services
 {
     public class ImageService
     {
-        public virtual string GenerateBase64AvatarImage(List<Image> images) 
+        public virtual string GenerateBase64AvatarImage(List<Image> images, int size) 
         {
             var generatedImage = MergeImages(images);
 
-            generatedImage = ResizeImage(generatedImage, 200, 200);
+            generatedImage = ResizeImage(generatedImage, size, size);
 
             return ConvertToBase64String(generatedImage);
         }
 
         private Image MergeImages(List<Image> images) 
         {
-            var generatedImage = (Image) images.First().Clone();
+            var generatedImage = (Image)images.First().Clone();
+
             var graphics = Graphics.FromImage(generatedImage);
 
-            foreach (var image in images) 
+            foreach (var image in images)
                 graphics.DrawImage(image, 0, 0, image.Width, image.Height);
-            
+
             return generatedImage;
         }
 

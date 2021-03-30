@@ -23,5 +23,18 @@ namespace Avatarize_Tests
                 return options;
             });
         }
+
+        public bool Compare<T>(T expected, T result)
+        {
+            try
+            {
+                expected.Should().BeEquivalentTo(result);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
