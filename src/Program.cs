@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace avatarize
+namespace Avatarize
 {
     public class Program
     {

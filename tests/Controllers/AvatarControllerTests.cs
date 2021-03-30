@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
-using avatarize.Controllers;
-using avatarize.Services;
+using Avatarize.Controllers;
+using Avatarize.Services;
 using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
 using FluentAssertions;

@@ -1,4 +1,4 @@
-﻿using avatarize.Services;
+﻿using Avatarize.Services;
 using Avatarize_Tests;
 using FluentAssertions;
 using NUnit.Framework;

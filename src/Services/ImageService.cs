@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using Image = System.Drawing.Image;
 
-namespace avatarize.Services
+namespace Avatarize.Services
 {
     public class ImageService
     {

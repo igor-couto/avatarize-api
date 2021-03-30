@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace avatarize.Services
+namespace Avatarize.Services
 {
     public class AvatarGenerationService
     {

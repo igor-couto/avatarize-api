@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.IO;
 
-namespace avatarize.Services
+namespace Avatarize.Services
 {
     public class AssetsService
     {

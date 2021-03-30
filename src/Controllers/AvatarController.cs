@@ -1,8 +1,7 @@
-using avatarize.Services;
-using Avatarize;
+using Avatarize.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace avatarize.Controllers
+namespace Avatarize.Controllers
 {
     [ApiController]
     [Route("[controller]")]

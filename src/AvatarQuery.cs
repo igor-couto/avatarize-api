@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Avatarize
+﻿namespace Avatarize
 {
     public class AvatarQuery
     {
