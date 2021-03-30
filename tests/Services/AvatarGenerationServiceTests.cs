@@ -1,5 +1,5 @@
-﻿using Avatarize.Services;
-using Avatarize;
+﻿using Avatarize;
+using Avatarize.Services;
 using Avatarize_Tests;
 using FakeItEasy;
 using NUnit.Framework;
@@ -46,7 +46,7 @@ namespace AvatarizeTests.Services
         [Test]
         public void ShouldCallGenerateBase64AvatarImageWithExpectedParameters()
         {
-            var query = new AvatarQuery 
+            var query = new AvatarQuery
             { 
                 Input = Faker.Person.FullName,
                 Background = true,

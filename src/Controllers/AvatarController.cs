@@ -16,8 +16,9 @@ namespace Avatarize.Controllers
         public IActionResult Get(
             [FromQuery] AvatarQuery query)
         {
-            if (string.IsNullOrWhiteSpace(query.Input))
-                return BadRequest("The input cannot be empty");
+            var errorMessages = query.Validate();
+            if(!string.IsNullOrWhiteSpace(errorMessages))
+                return BadRequest(errorMessages);
 
             return Ok(_avatarGenerationService.GenerateAvatar(query));
         }
