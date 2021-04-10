@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 
 namespace Avatarize.Services
 {
-    public class AssetsService
+    public class AssetsService : IDisposable
     {
         public List<Image> Skins { get; }
         public List<Image> Hairs { get; }
@@ -58,6 +59,23 @@ namespace Avatarize.Services
 
             for (var i = 1; i <= clothesCount; i++)
                 Clothes.Add(Image.FromFile(clothesPath + i + ".png"));
+        }
+
+        public void Dispose()
+        {
+            Background.Dispose();
+            Frame.Dispose();
+            Gradient.Dispose();
+            Vignette.Dispose();
+
+            foreach (var skin in Skins)
+                skin.Dispose();
+
+            foreach (var hair in Hairs)
+                hair.Dispose();
+
+            foreach (var clothe in Clothes)
+                clothe.Dispose();
         }
     }
 }

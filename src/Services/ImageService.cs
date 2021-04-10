@@ -17,7 +17,11 @@ namespace Avatarize.Services
 
             generatedImage = ResizeImage(generatedImage, size, size);
 
-            return ConvertToBase64String(generatedImage);
+            var base64Image = ConvertToBase64String(generatedImage);
+
+            generatedImage.Dispose();
+
+            return base64Image;
         }
 
         private Image MergeImages(List<Image> images) 
