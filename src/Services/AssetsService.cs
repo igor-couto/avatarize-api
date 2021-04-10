@@ -28,19 +28,29 @@ namespace Avatarize.Services
             LoadHairs(currentPath);
             LoadClothes(currentPath);
             
-            Background = Image.FromFile(currentPath + @"\Images\" + "Background.png");
-            Frame = Image.FromFile(currentPath + @"\Images\" + "Frame.png");
-            Gradient = Image.FromFile(currentPath + @"\Images\" + "Gradient.png");
-            Vignette = Image.FromFile(currentPath + @"\Images\" + "Vignette.png");
+            using (var bmpTemp = new Bitmap(currentPath + @"\Images\" + "Background.png"))
+                Background = new Bitmap(bmpTemp);
+            
+            using (var bmpTemp = new Bitmap(currentPath + @"\Images\" + "Frame.png"))
+                Frame = new Bitmap(bmpTemp);
+
+            using (var bmpTemp = new Bitmap(currentPath + @"\Images\" + "Gradient.png"))
+                Gradient = new Bitmap(bmpTemp);
+
+            using (var bmpTemp = new Bitmap(currentPath + @"\Images\" + "Vignette.png"))
+                Vignette = new Bitmap(bmpTemp);
         }
 
         private void LoadSkins(string currentPath) 
         {
             var skinPath = currentPath + "\\Images\\Skin\\";
             var skinCount = Directory.GetFiles(skinPath, "*", SearchOption.TopDirectoryOnly).Length;
-            
-            for (var i = 1; i <= skinCount; i++)
-                Skins.Add(Image.FromFile(skinPath + i + ".png"));
+
+            for (var i = 1; i <= skinCount; i++) 
+            {
+                using var bmpTemp = new Bitmap(skinPath + i + ".png");
+                Skins.Add(new Bitmap(bmpTemp));
+            }
         }
 
         private void LoadHairs(string currentPath) 
@@ -49,7 +59,10 @@ namespace Avatarize.Services
             var hairCount = Directory.GetFiles(hairPath, "*", SearchOption.TopDirectoryOnly).Length;
 
             for (var i = 1; i <= hairCount; i++)
-                Hairs.Add(Image.FromFile(hairPath + i + ".png"));
+            {
+                using var bmpTemp = new Bitmap(hairPath + i + ".png");
+                Hairs.Add(new Bitmap(bmpTemp));
+            }
         }
 
         private void LoadClothes(string currentPath)
@@ -58,7 +71,10 @@ namespace Avatarize.Services
             var clothesCount = Directory.GetFiles(clothesPath, "*", SearchOption.TopDirectoryOnly).Length;
 
             for (var i = 1; i <= clothesCount; i++)
-                Clothes.Add(Image.FromFile(clothesPath + i + ".png"));
+            {
+                using var bmpTemp = new Bitmap(clothesPath + i + ".png");
+                Clothes.Add(new Bitmap(bmpTemp));
+            }
         }
 
         public void Dispose()
