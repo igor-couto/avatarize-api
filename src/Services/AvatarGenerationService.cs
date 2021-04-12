@@ -1,5 +1,4 @@
-﻿using Avatarize;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -20,8 +19,7 @@ namespace Avatarize.Services
 
         public virtual string GenerateAvatar(AvatarQuery query)
         {
-            var seed = _hashService.GetHash(query.Input);
-            var random = new Random(seed);
+            var hash = _hashService.GetHash(query.Input);
 
             var images = new List<Image>();
 
@@ -34,14 +32,30 @@ namespace Avatarize.Services
             if (query.Vignette.HasValue)
                 images.Add(_assetsService.Vignette);
 
-            images.Add(_assetsService.Skins[random.Next(1, _assetsService.Skins.Count)]);
-            images.Add(_assetsService.Hairs[random.Next(1, _assetsService.Hairs.Count)]);
-            images.Add(_assetsService.Clothes[random.Next(1, _assetsService.Clothes.Count)]);
+            images.Add(_assetsService.Skins[
+                (int)(GetPartOf(hash, 8, 8) % _assetsService.Skins.Count)
+            ]);
+
+            images.Add(_assetsService.Hairs[
+                (int)(GetPartOf(hash, 16, 8) % _assetsService.Hairs.Count)
+            ]);
+
+            images.Add(_assetsService.Clothes[
+                (int)(GetPartOf(hash, 24, 8) % _assetsService.Clothes.Count)
+            ]);
 
             if (query.Frame.HasValue)
                 images.Add(_assetsService.Frame);
 
             return _imageService.GenerateBase64AvatarImage(images, query.Size?? 200);
+        }
+
+        public uint GetPartOf(uint value, int startIndex, int size)
+        {
+            var result = value << startIndex;
+            result = result >> (32 - size);
+            
+            return result;
         }
     }
 }

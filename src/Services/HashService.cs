@@ -6,9 +6,9 @@
 
         private uint SDBMHash(string input)
         {
-            uint hash = 0;
+            var hash = 0u;
 
-            for (uint i = 0; i < input.Length; i++)
+            for (var i = 0u; i < input.Length; i++)
                 hash = (hash << 6) + (hash << 16) - hash + ((byte)input[(int)i]);
 
             return hash;
@@ -16,9 +16,9 @@
 
         private uint Hash(string seed)
         {
-            uint hash = 0;
+            var hash = 0u;
 
-            for (uint i = 0; i < seed.Length; i++)
+            for (var i = 0u; i < seed.Length; i++)
             {
                 hash = ((hash << 5) - hash + seed[(int) i]) | 0;
                 hash = Xorshift(hash);
