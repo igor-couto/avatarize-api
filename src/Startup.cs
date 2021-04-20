@@ -22,6 +22,13 @@ namespace Avatarize
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "avatarize", Version = "v1" });
             });
 
+            services.AddCors(o => o.AddPolicy("AllowPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
+
             services.AddSingleton(new AssetsService());
             services.AddTransient<AvatarGenerationService>();
             services.AddTransient<HashService>();
@@ -30,6 +37,8 @@ namespace Avatarize
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors("AllowPolicy");
+
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "avatarize v1"));
