@@ -1,21 +1,16 @@
-using Microsoft.OpenApi.Models;
 using Avatarize;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddHealthChecks();
+var environment = builder.Environment;
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+if (environment.IsDevelopment())
 {
-    c.SwaggerDoc("v1.0.0",
-        new OpenApiInfo
-        {
-            Title = "Avatarize API",
-            Description = "Generate user avatars using hash visualization techniques.",
-            Version = "v1.0.0"
-        });
-});
+    builder.Services.AddSwagger();
+    builder.Services.AddEndpointsApiExplorer();
+}
+
+builder.Services.AddHealthChecks();
 
 builder.Services.AddSingleton(new AssetsService());
 builder.Services.AddTransient<AvatarGenerationService>();
@@ -27,12 +22,8 @@ await using var app = builder.Build();
 app.UseHttpsRedirection();
 app.MapHealthChecks("/health");
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1.0.0/swagger.json", "Avatarize API v1.0.0"); });
-    app.UseDeveloperExceptionPage();
-}
+if (environment.IsDevelopment())
+    app.UseSwaggerConfiguration();
 
 app.MapEndpoints();
 
