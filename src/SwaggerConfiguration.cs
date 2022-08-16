@@ -31,7 +31,6 @@ public static class SwaggerConfiguration
         app.UseSwaggerUI(config =>
         {
             config.SwaggerEndpoint("/swagger/v0/swagger.json", "Avatarize API v1.0.0");
-            app.UseDeveloperExceptionPage();
             config.DefaultModelsExpandDepth(-1);
         });
     }

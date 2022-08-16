@@ -23,7 +23,10 @@ app.UseHttpsRedirection();
 app.MapHealthChecks("/health");
 
 if (environment.IsDevelopment())
+{
     app.UseSwaggerConfiguration();
+    app.UseDeveloperExceptionPage();
+}
 
 app.MapEndpoints();
 

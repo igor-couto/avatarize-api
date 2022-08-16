@@ -2,8 +2,8 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /source
 COPY . .
-RUN dotnet restore "./Avatarize.csproj" --disable-parallel
-RUN dotnet publish "./Avatarize.csproj" -c Release -o /app --no-restore
+RUN dotnet restore "./src/Avatarize.csproj" --disable-parallel
+RUN dotnet publish "./src/Avatarize.csproj" -c Release -o /app --no-restore
 
 # Serve Stage
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS run
