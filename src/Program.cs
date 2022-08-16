@@ -1,17 +1,35 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+using Avatarize;
 
-namespace Avatarize
+var builder = WebApplication.CreateBuilder(args);
+
+var environment = builder.Environment;
+
+if (environment.IsDevelopment())
 {
-    public class Program
-    {
-        public static void Main(string[] args) => CreateHostBuilder(args).Build().Run();
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
+    builder.Services.AddSwagger();
+    builder.Services.AddEndpointsApiExplorer();
 }
+
+builder.Services.AddHealthChecks();
+
+builder.Services.AddSingleton(new AssetsService());
+builder.Services.AddTransient<AvatarGenerationService>();
+builder.Services.AddTransient<HashService>();
+builder.Services.AddTransient<ImageService>();
+
+await using var app = builder.Build();
+
+app.UseHttpsRedirection();
+app.MapHealthChecks("/health");
+
+if (environment.IsDevelopment())
+{
+    app.UseSwaggerConfiguration();
+    app.UseDeveloperExceptionPage();
+}
+
+app.MapEndpoints();
+
+app.Run();
+
+public partial class Program { }

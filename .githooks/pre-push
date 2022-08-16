@@ -2,10 +2,10 @@
 RED='\033[0;31m'
 GREEN='\033[1;32m'
 YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
+NOCOLOR='\033[0m' # No Color
 
 echo ""
-echo -e "${YELLOW}Building project...${NC}"
+echo -e "${YELLOW}Building project...${NOCOLOR}"
     
 DOTNET_CLI_TELEMETRY_OPTOUT=1
 DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
@@ -16,28 +16,28 @@ dotnet build
 
 if [ $? -ne 0 ] ; then
     echo ""
-	echo -e "${RED}Build failed. Please correct the problems before proceeding${NC}"
+	echo -e "${RED}Build failed. Please correct the problems before proceeding${NOCOLOR}"
 	echo ""
 	exit 1
 fi
 
 echo ""
-echo -e "${YELLOW}Running unit tests...${NC}"
+echo -e "${YELLOW}Running unit tests...${NOCOLOR}"
 echo ""
 	
-cd ../tests/
+cd ../tests/UnitTests
 
 dotnet test
 
 if [ $? -ne 0 ] ; then
     echo ""
-	echo -e "${RED}One or more unit tests failed. Please correct them before uploading changes${NC}"
+	echo -e "${RED}One or more unit tests failed. Please correct them before uploading changes${NOCOLOR}"
 	echo ""
 	exit 1
 fi
 
 echo ""
-echo -e "${GREEN}Pre push completed. Everything is OK${NC}"
+echo -e "${GREEN}Pre push completed. Everything is OK${NOCOLOR}"
 echo ""
 
 exit 0
