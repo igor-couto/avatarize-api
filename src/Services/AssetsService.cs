@@ -12,36 +12,36 @@ public class AssetsService : IDisposable
     public Image Gradient { get; }
     public Image Vignette { get; }
 
+    private static readonly char Separator = Path.DirectorySeparatorChar;
+
     public AssetsService()
     {
-        var currentPath = Directory.GetCurrentDirectory();
+        var currentPath = $"{Directory.GetCurrentDirectory()}{Separator}Images{Separator}";
 
         Skins = new List<Image>();
         Hairs = new List<Image>();
         Clothes = new List<Image>();
 
-        Console.WriteLine(currentPath);
-
         LoadSkins(currentPath);
         LoadHairs(currentPath);
         LoadClothes(currentPath);
 
-        using (var bmpTemp = new Bitmap(currentPath + @"\Images\" + "Background.png"))
+        using (var bmpTemp = new Bitmap(currentPath + "Background.png"))
             Background = new Bitmap(bmpTemp);
 
-        using (var bmpTemp = new Bitmap(currentPath + @"\Images\" + "Frame.png"))
+        using (var bmpTemp = new Bitmap(currentPath + "Frame.png"))
             Frame = new Bitmap(bmpTemp);
 
-        using (var bmpTemp = new Bitmap(currentPath + @"\Images\" + "Gradient.png"))
+        using (var bmpTemp = new Bitmap(currentPath + "Gradient.png"))
             Gradient = new Bitmap(bmpTemp);
 
-        using (var bmpTemp = new Bitmap(currentPath + @"\Images\" + "Vignette.png"))
+        using (var bmpTemp = new Bitmap(currentPath + "Vignette.png"))
             Vignette = new Bitmap(bmpTemp);
     }
 
     private void LoadSkins(string currentPath)
     {
-        var skinPath = currentPath + "/Images/Skin/";
+        var skinPath = currentPath + "Skin" + Separator;
         var skinCount = Directory.GetFiles(skinPath, "*", SearchOption.TopDirectoryOnly).Length;
 
         for (var i = 1; i <= skinCount; i++)
@@ -53,7 +53,7 @@ public class AssetsService : IDisposable
 
     private void LoadHairs(string currentPath)
     {
-        var hairPath = currentPath + "\\Images\\Hair\\";
+        var hairPath = currentPath + "Hair" + Separator;
         var hairCount = Directory.GetFiles(hairPath, "*", SearchOption.TopDirectoryOnly).Length;
 
         for (var i = 1; i <= hairCount; i++)
@@ -65,7 +65,7 @@ public class AssetsService : IDisposable
 
     private void LoadClothes(string currentPath)
     {
-        var clothesPath = currentPath + "\\Images\\Clothes\\";
+        var clothesPath = currentPath + "Clothes" + Separator;
         var clothesCount = Directory.GetFiles(clothesPath, "*", SearchOption.TopDirectoryOnly).Length;
 
         for (var i = 1; i <= clothesCount; i++)
