@@ -18,8 +18,9 @@ public static class SwaggerConfiguration
                     Version = "v0",
                     Contact = new OpenApiContact
                     {
+                        Name = "Igor Couto",
                         Email = "igor.fcouto@gmail.com",
-                        Url = new Uri("igor-couto.github.io/avatarize.io")
+                        Url = new Uri("http://igor-couto.github.io/avatarize.io/")
                     }
                 });
         });
