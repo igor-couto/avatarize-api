@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSwagger();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddHealthChecks();
+builder.Services.AddHealthCheck();
 
 builder.Services.AddSingleton(new AssetsService());
 builder.Services.AddTransient<AvatarGenerationService>();
@@ -16,7 +16,7 @@ builder.Services.AddTransient<ImageService>();
 var app = builder.Build();
 
 app.UseHttpsRedirection();
-app.MapHealthChecks("/health");
+app.UseHealthCheckConfiguration();
 app.UseSwaggerConfiguration();
 app.UseDeveloperExceptionPage();
 app.MapEndpoints();
