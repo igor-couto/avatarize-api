@@ -1,9 +1,12 @@
-namespace Avatarize;
-
 using Microsoft.OpenApi.Models;
+
+namespace Avatarize;
 
 public static class SwaggerConfiguration
 {
+    private const string MajorVersion = "0";
+    private const string Title = $"Avatarize API v{MajorVersion}";
+
     public static void AddSwagger(this IServiceCollection services)
     {
         services.AddEndpointsApiExplorer();
@@ -13,9 +16,9 @@ public static class SwaggerConfiguration
             config.SwaggerDoc("v0",
                 new OpenApiInfo
                 {
-                    Title = "Avatarize API",
+                    Title = Title,
                     Description = "Generate user avatars using hash visualization techniques.",
-                    Version = "v0",
+                    Version = $"v{MajorVersion}",
                     Contact = new OpenApiContact
                     {
                         Name = "Igor Couto",
@@ -23,16 +26,21 @@ public static class SwaggerConfiguration
                         Url = new Uri("http://igor-couto.github.io/avatarize.io/")
                     }
                 });
+
+            config.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "Avatarize.xml"));
+
         });
     }
 
     public static void UseSwaggerConfiguration(this WebApplication app)
     {
         app.UseSwagger();
-        app.UseSwaggerUI(config =>
+        app.UseSwaggerUI(options =>
         {
-            config.SwaggerEndpoint("/swagger/v0/swagger.json", "Avatarize API v1.0.0");
-            config.DefaultModelsExpandDepth(-1);
+            options.DocumentTitle = Title;
+            options.SwaggerEndpoint($"/swagger/v{MajorVersion}/swagger.json", Title);
+            options.DefaultModelsExpandDepth(-1);
+            options.DisplayRequestDuration();
         });
     }
 }

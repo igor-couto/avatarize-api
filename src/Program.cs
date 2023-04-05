@@ -4,11 +4,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 var environment = builder.Environment;
 
-if (environment.IsDevelopment())
-{
-    builder.Services.AddSwagger();
-    builder.Services.AddEndpointsApiExplorer();
-}
+builder.Services.AddSwagger();
+builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddHealthChecks();
 
@@ -22,11 +19,8 @@ await using var app = builder.Build();
 app.UseHttpsRedirection();
 app.MapHealthChecks("/health");
 
-if (environment.IsDevelopment())
-{
-    app.UseSwaggerConfiguration();
-    app.UseDeveloperExceptionPage();
-}
+app.UseSwaggerConfiguration();
+app.UseDeveloperExceptionPage();
 
 app.MapEndpoints();
 
