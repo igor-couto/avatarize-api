@@ -18,6 +18,7 @@ public static class SwaggerConfiguration
                     Title = Title,
                     Description = "Generate user avatars using hash visualization techniques.",
                     Version = $"v{ApiVersioningConfiguration.MajorVersion}",
+                    License = new OpenApiLicense { Name = "GNU Affero General Public License", Url = new Uri("https://github.com/igor-couto/avatarize-api/blob/main/LICENSE") },
                     Contact = new OpenApiContact
                     {
                         Name = "Igor Couto",
