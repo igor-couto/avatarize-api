@@ -27,7 +27,7 @@ public class AvatarGenerationServiceTests : BaseTests
     [Test]
     public void ShouldCallGetHash()
     {
-        var query = new AvatarRequest { Input = Faker.Person.FullName };
+        var query = new AvatarQueryParameters { Input = Faker.Person.FullName };
         _avatarGenerationService.Create(query);
 
         A.CallTo(() => _hashService.GetHash(query.Input)).MustHaveHappenedOnceExactly();
@@ -36,7 +36,7 @@ public class AvatarGenerationServiceTests : BaseTests
     [Test]
     public void ShouldCallGenerateBase64AvatarImage()
     {
-        var query = new AvatarRequest { Input = Faker.Person.FullName };
+        var query = new AvatarQueryParameters { Input = Faker.Person.FullName };
         _avatarGenerationService.Create(query);
 
         A.CallTo(() => _imageService.GenerateBase64AvatarImage(A<List<Image>>.Ignored, A<int>.Ignored)).MustHaveHappenedOnceExactly();
@@ -45,7 +45,7 @@ public class AvatarGenerationServiceTests : BaseTests
     [Test]
     public void ShouldCallGenerateBase64AvatarImageWithExpectedParameters()
     {
-        var query = new AvatarRequest
+        var query = new AvatarQueryParameters
         {
             Input = Faker.Person.FullName,
             Background = true,

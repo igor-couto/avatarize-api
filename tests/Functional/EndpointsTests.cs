@@ -4,24 +4,20 @@ using System.Threading.Tasks;
 using Bogus;
 using FluentAssertions;
 using NUnit.Framework;
-using Avatarize.Endpoints;
 using Avatarize.Requests;
-using IntegrationTests;
 
 namespace IntegrationTests;
 
 public class EndpointsTests
 {
+    private Faker Faker = new();
     private HttpClient _httpClient;
-    private Faker Faker;
-    private AvatarRequest _avatarRequest;
+    private AvatarQueryParameters _avatarRequest;
 
     [SetUp]
     public void SetUp()
     {
         _httpClient = new TestApplication().CreateClient();
-
-        Faker = new Faker("en");
 
         _avatarRequest = new()
         {
@@ -46,7 +42,7 @@ public class EndpointsTests
     [Ignore("TODO: Check this test")]
     public async Task ShouldReturnOkWithGeneratedImage()
     {
-        _avatarRequest = new AvatarRequest
+        _avatarRequest = new AvatarQueryParameters
         {
             Input = "Igor Couto",
             Size = 50,

@@ -16,7 +16,7 @@ public class AvatarGenerationService
         _assetsService = assetsService;
     }
 
-    public string Create(AvatarRequest request)
+    public string Create(AvatarQueryParameters request)
     {
         var hash = _hashService.GetHash(request.Input);
 
