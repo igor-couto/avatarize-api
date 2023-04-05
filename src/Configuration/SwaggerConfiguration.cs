@@ -4,8 +4,7 @@ namespace Avatarize.Configuration;
 
 public static class SwaggerConfiguration
 {
-    private const string MajorVersion = "0";
-    private const string Title = $"Avatarize API v{MajorVersion}";
+    private const string Title = $"Avatarize API v{ApiVersioningConfiguration.MajorVersion}.{ApiVersioningConfiguration.MinorVerion}";
 
     public static void AddSwagger(this IServiceCollection services)
     {
@@ -13,12 +12,12 @@ public static class SwaggerConfiguration
 
         services.AddSwaggerGen(config =>
         {
-            config.SwaggerDoc("v0",
+            config.SwaggerDoc($"v{ApiVersioningConfiguration.MajorVersion}",
                 new OpenApiInfo
                 {
                     Title = Title,
                     Description = "Generate user avatars using hash visualization techniques.",
-                    Version = $"v{MajorVersion}",
+                    Version = $"v{ApiVersioningConfiguration.MajorVersion}",
                     Contact = new OpenApiContact
                     {
                         Name = "Igor Couto",
@@ -38,7 +37,7 @@ public static class SwaggerConfiguration
         app.UseSwaggerUI(options =>
         {
             options.DocumentTitle = Title;
-            options.SwaggerEndpoint($"/swagger/v{MajorVersion}/swagger.json", Title);
+            options.SwaggerEndpoint($"/swagger/v{ApiVersioningConfiguration.MajorVersion}/swagger.json", Title);
             options.DefaultModelsExpandDepth(-1);
             options.DisplayRequestDuration();
         });
