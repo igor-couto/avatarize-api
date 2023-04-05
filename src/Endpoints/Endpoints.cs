@@ -1,4 +1,7 @@
-namespace Avatarize;
+using Avatarize.Requests;
+using Avatarize.Services;
+
+namespace Avatarize.Endpoints;
 
 public static class Endpoints
 {

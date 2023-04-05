@@ -1,4 +1,4 @@
-﻿namespace Avatarize;
+﻿namespace Avatarize.Services;
 
 public class HashService
 {

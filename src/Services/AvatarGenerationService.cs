@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
+using Avatarize.Requests;
 
-namespace Avatarize;
+namespace Avatarize.Services;
 
 public class AvatarGenerationService
 {

@@ -1,13 +1,14 @@
-using Avatarize;
-using Bogus;
-using FluentAssertions;
-using IntegrationTests;
-using NUnit.Framework;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Bogus;
+using FluentAssertions;
+using NUnit.Framework;
+using Avatarize.Endpoints;
+using Avatarize.Requests;
+using IntegrationTests;
 
-namespace AvatarizeTests;
+namespace IntegrationTests;
 
 public class EndpointsTests
 {

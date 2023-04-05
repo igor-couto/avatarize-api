@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Avatarize;
+namespace Avatarize.Services;
 public class AssetsService : IDisposable
 {
     public List<Image> Skins { get; }

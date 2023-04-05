@@ -2,9 +2,10 @@
 using System.Drawing;
 using NUnit.Framework;
 using FakeItEasy;
-using Avatarize;
+using Avatarize.Services;
+using Avatarize.Requests;
 
-namespace AvatarizeTests;
+namespace UnitTests.Services;
 
 public class AvatarGenerationServiceTests : BaseTests
 {

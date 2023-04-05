@@ -1,12 +1,11 @@
-using Avatarize;
+using Avatarize.Configuration;
+using Avatarize.Endpoints;
+using Avatarize.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var environment = builder.Environment;
-
 builder.Services.AddSwagger();
 builder.Services.AddEndpointsApiExplorer();
-
 builder.Services.AddHealthChecks();
 
 builder.Services.AddSingleton(new AssetsService());
@@ -14,14 +13,12 @@ builder.Services.AddTransient<AvatarGenerationService>();
 builder.Services.AddTransient<HashService>();
 builder.Services.AddTransient<ImageService>();
 
-await using var app = builder.Build();
+var app = builder.Build();
 
 app.UseHttpsRedirection();
 app.MapHealthChecks("/health");
-
 app.UseSwaggerConfiguration();
 app.UseDeveloperExceptionPage();
-
 app.MapEndpoints();
 
 app.Run();

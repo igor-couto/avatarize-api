@@ -1,8 +1,8 @@
 ﻿using NUnit.Framework;
 using FluentAssertions;
-using Avatarize;
+using Avatarize.Services;
 
-namespace AvatarizeTests;
+namespace UnitTests.Services;
 
 public class HashServiceTests : BaseTests
 {

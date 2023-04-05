@@ -1,4 +1,4 @@
-﻿namespace Avatarize;
+﻿namespace Avatarize.Requests;
 
 public class AvatarRequest
 {

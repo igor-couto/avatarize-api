@@ -1,6 +1,6 @@
 using Microsoft.OpenApi.Models;
 
-namespace Avatarize;
+namespace Avatarize.Configuration;
 
 public static class SwaggerConfiguration
 {

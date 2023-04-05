@@ -3,6 +3,8 @@ using FluentAssertions;
 using NUnit.Framework;
 using System;
 
+namespace UnitTests;
+
 public class BaseTests
 {
     protected Faker Faker { get; private set; }

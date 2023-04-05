@@ -3,7 +3,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using Image = System.Drawing.Image;
 
-namespace Avatarize;
+namespace Avatarize.Services;
 
 public class ImageService
 {
