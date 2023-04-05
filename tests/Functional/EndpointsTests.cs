@@ -43,7 +43,7 @@ public class EndpointsTests
     }
 
     [Test]
-    [Ignore]
+    [Ignore("TODO: Check this test")]
     public async Task ShouldReturnOkWithGeneratedImage()
     {
         _avatarRequest = new AvatarRequest
