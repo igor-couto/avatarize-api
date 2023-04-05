@@ -1,6 +1,8 @@
 # Avatarize API
 
-![BuildAndDeployBadge](https://github.com/igor-couto/avatarize-api/actions/workflows/main_avatarize-api.yml/badge.svg)
+[![Build Badge](https://github.com/igor-couto/avatarize-api/actions/workflows/build.yml/badge.svg)](https://github.com/igor-couto/avatarize-api/actions/workflows/build.yml)
+[![Test Badge](https://github.com/igor-couto/avatarize-api/actions/workflows/tests.yml/badge.svg)](https://github.com/igor-couto/avatarize-api/actions/workflows/tests.yml)
+![Deploy Badge](https://github.com/igor-couto/avatarize-api/actions/workflows/main_avatarize-api.yml/badge.svg)
 
 Generate avatars with text input by using hashing techniques
 
