@@ -8,6 +8,7 @@ builder.Services.AddSwagger();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHealthCheck();
 builder.Services.AddVersioning();
+builder.Services.AddCache();
 
 builder.Services.AddSingleton(new AssetsService());
 builder.Services.AddTransient<AvatarGenerationService>();
