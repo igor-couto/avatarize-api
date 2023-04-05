@@ -20,6 +20,7 @@ public static class Endpoints
         .WithName("Get Avatar")
         .WithSummary("Outputs an avatar image for given parameters")
         .Produces(statusCode: (int) HttpStatusCode.OK, contentType: "image/png")
-        .CacheOutput("Expire in 10 minutes");
+        .CacheOutput("Expire in 10 minutes")
+        .RequireRateLimiting("Get Avatar Rate Limit");
     }
 }
