@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /source
 COPY . .
 RUN dotnet restore "./src/Avatarize.csproj" --disable-parallel
-RUN dotnet publish "./src/Avatarize.csproj" -c Release -o /app --no-restore
+RUN dotnet publish "./src/Avatarize.csproj" -c Release -o /app --no-restore --self-contained true
 
 # Serve Stage
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS run
