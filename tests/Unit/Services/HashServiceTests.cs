@@ -21,7 +21,7 @@ public class HashServiceTests : BaseTests
     [TestCase("Igor Freitas Couto", 1299966643u)]
     [TestCase("04111991", 1851254486u)]
     [TestCase("00000001111001110100111111011101", 2841252511u)]
-    public void ShoudReturnExpectedHashWhenUsingHash(string input, uint expectedHash)
+    public void GetHash_ShoudReturnExpectedHash_WhenUsingDefaultHash(string input, uint expectedHash)
     {
         var hashService = new HashService();
         hashService.GetHash(input).Should().Be(expectedHash);

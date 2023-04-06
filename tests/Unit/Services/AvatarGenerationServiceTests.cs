@@ -25,7 +25,7 @@ public class AvatarGenerationServiceTests : BaseTests
     }
 
     [Test]
-    public void ShouldCallGetHash()
+    public void Create_ShouldCall_GetHash()
     {
         var query = new AvatarQueryParameters { Input = Faker.Person.FullName };
         _avatarGenerationService.Create(query);
@@ -34,25 +34,25 @@ public class AvatarGenerationServiceTests : BaseTests
     }
 
     [Test]
-    public void ShouldCallGenerateBase64AvatarImage()
+    public void Create_ShouldCall_GenerateBase64AvatarImage()
     {
         var query = new AvatarQueryParameters { Input = Faker.Person.FullName };
         _avatarGenerationService.Create(query);
 
-        A.CallTo(() => _imageService.GenerateBase64AvatarImage(A<List<Image>>.Ignored, A<int>.Ignored)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _imageService.GenerateBase64AvatarImage(A<List<Image>>.Ignored, query.Size.Value)).MustHaveHappenedOnceExactly();
     }
 
     [Test]
-    public void ShouldCallGenerateBase64AvatarImageWithExpectedParameters()
+    public void Create_ShouldCall_GenerateBase64AvatarImage_WithExpectedParameters()
     {
         var query = new AvatarQueryParameters
         {
             Input = Faker.Person.FullName,
+            Size = Faker.Random.Number(24, 1000),
             Background = true,
             Frame = true,
             Gradient = true,
-            Vignette = true,
-            Size = Faker.Random.Number(24, 1000)
+            Vignette = true
         };
 
         var expectedImageArray = new List<Image>()
@@ -61,7 +61,6 @@ public class AvatarGenerationServiceTests : BaseTests
             _assetsService.Gradient,
             _assetsService.Vignette,
             _assetsService.Frame
-
         };
 
         _avatarGenerationService.Create(query);

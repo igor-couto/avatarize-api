@@ -6,9 +6,9 @@ using FluentAssertions;
 using NUnit.Framework;
 using Avatarize.Requests;
 
-namespace IntegrationTests;
+namespace FunctionalTests;
 
-public class EndpointsTests
+public class AvatarCreationTests
 {
     private Faker Faker = new();
     private HttpClient _httpClient;
