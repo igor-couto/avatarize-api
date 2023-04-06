@@ -1,4 +1,4 @@
-name: Build and deploy to Azure
+name: Deploy to Azure Web App
 
 on:
   push:
