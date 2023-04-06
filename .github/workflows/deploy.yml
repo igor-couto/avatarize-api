@@ -1,48 +1,21 @@
-name: Deploy to Azure Web App
+name: Deploy to AWS EC2
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: 'ubuntu-latest'
-
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
-
-    - name: Log in to registry
-      uses: docker/login-action@v1
-      with:
-        registry: https://index.docker.io/v1/
-        username: ${{ secrets.AzureAppService_ContainerUsername_381ba07d921c407cbeb8853df7523f2b }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_17567532d29746c99f2c496ed4312651 }}
-
-    - name: Build and push container image to registry
-      uses: docker/build-push-action@v2
-      with:
-        push: true
-        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_381ba07d921c407cbeb8853df7523f2b }}/docker.io/igorcouto/avatarize:${{ github.sha }}
-        file: ./Dockerfile
-
   deploy:
     runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-    - name: Deploy to Azure Web App
-      id: deploy-to-webapp
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: 'avatarize-api'
-        slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_e6ae768802eb4e2b8380cf6fff515e55 }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_381ba07d921c407cbeb8853df7523f2b }}/docker.io/igorcouto/avatarize:${{ github.sha }}'
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Deploy to EC2
+      uses: easingthemes/ssh-deploy@main
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+        REMOTE_HOST: ${{ secrets.HOST_DNS }}
+        REMOTE_USER: ${{ secrets.USERNAME }}
