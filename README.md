@@ -5,7 +5,22 @@
 [![Test Badge](https://github.com/igor-couto/avatarize-api/actions/workflows/tests.yml/badge.svg)](https://github.com/igor-couto/avatarize-api/actions/workflows/tests.yml)
 [![Deploy Badge](https://github.com/igor-couto/avatarize-api/actions/workflows/deploy.yml/badge.svg)](https://github.com/igor-couto/avatarize-api/actions/workflows/deploy.yml)
 
-Generate avatars with text input by using hashing techniques
+Generate avatars with text input by using hashing techniques.
+
+## Try it
+
+### API User Interface 
+You can access the Swagger API Interface here:
+http://ec2-52-6-37-108.compute-1.amazonaws.com/swagger/index.html
+
+### HTTP Request
+Make the HTTP request like this:
+```bash
+curl --request GET --url 'http://ec2-52-6-37-108.compute-1.amazonaws.com/avatar?input=MY_INPUT_HERE'
+```
+
+### Front-end Application
+A complete application can be found here: [igor-couto.github.io/avatarize.io](https://igor-couto.github.io/avatarize.io)
 
 ![](https://github.com/igor-couto/images/blob/main/avatarize/screenshot.png)
 
