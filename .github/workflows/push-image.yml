@@ -1,4 +1,4 @@
-name: Deploy to AWS EC2
+name: Push Image to AWS ECR
 
 on:
   push:
