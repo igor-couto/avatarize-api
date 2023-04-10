@@ -26,17 +26,17 @@ public class AssetsService : IDisposable
         LoadHairs(currentPath);
         LoadClothes(currentPath);
 
-        using (var bmpTemp = new Bitmap(currentPath + "Background.png"))
-            Background = new Bitmap(bmpTemp);
+        using var bmpBackground = new Bitmap(currentPath + "Background.png");
+        Background = new Bitmap(bmpBackground);
 
-        using (var bmpTemp = new Bitmap(currentPath + "Frame.png"))
-            Frame = new Bitmap(bmpTemp);
+        using var bmpFrame = new Bitmap(currentPath + "Frame.png");
+        Frame = new Bitmap(bmpFrame);
 
-        using (var bmpTemp = new Bitmap(currentPath + "Gradient.png"))
-            Gradient = new Bitmap(bmpTemp);
+        using var bmpGradient = new Bitmap(currentPath + "Gradient.png");
+        Gradient = new Bitmap(bmpGradient);
 
-        using (var bmpTemp = new Bitmap(currentPath + "Vignette.png"))
-            Vignette = new Bitmap(bmpTemp);
+        using var bmpVignette = new Bitmap(currentPath + "Vignette.png");
+        Vignette = new Bitmap(bmpVignette);
     }
 
     private void LoadSkins(string currentPath)

@@ -22,7 +22,7 @@ public class ImageService
 
     private Image MergeImages(List<Image> images)
     {
-        var generatedImage = (Image)images.First().Clone();
+        var generatedImage = (Image) images.First().Clone();
 
         var graphics = Graphics.FromImage(generatedImage);
 
@@ -48,18 +48,18 @@ public class ImageService
 
         destImage.SetResolution(72, 72);
 
-        using (var graphics = Graphics.FromImage(destImage))
-        {
-            graphics.CompositingMode = CompositingMode.SourceCopy;
-            graphics.CompositingQuality = CompositingQuality.Default;
-            graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-            graphics.SmoothingMode = SmoothingMode.None;
-            graphics.PixelOffsetMode = PixelOffsetMode.None;
+        using var graphics = Graphics.FromImage(destImage);
+        
+        graphics.CompositingMode = CompositingMode.SourceCopy;
+        graphics.CompositingQuality = CompositingQuality.AssumeLinear;
+        graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+        graphics.SmoothingMode = SmoothingMode.None;
+        graphics.PixelOffsetMode = PixelOffsetMode.None;
 
-            using var wrapMode = new ImageAttributes();
-            wrapMode.SetWrapMode(WrapMode.TileFlipXY);
-            graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
-        }
+        using var wrapMode = new ImageAttributes();
+        wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+        graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
+        
         return destImage;
     }
 }
