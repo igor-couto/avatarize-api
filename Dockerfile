@@ -8,9 +8,9 @@ RUN dotnet publish "./src/Avatarize.csproj" -c Release -o /app --no-restore --se
 # Serve Stage
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS run
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
-ENV ASPNETCORE_URLS=http://+:5105
-ENV ASPNETCORE_HTTP_PORT=http://+:5105
-ENV ASPNETCORE_HTTPS_PORT=https://+:7152
+ENV ASPNETCORE_URLS=http://+:80
+ENV ASPNETCORE_HTTP_PORT=http://+:80
+ENV ASPNETCORE_HTTPS_PORT=https://+:443
 RUN apt-get update
 RUN apt-get install -y apt-utils
 RUN apt-get install -y libgdiplus
@@ -19,6 +19,6 @@ RUN ln -s /usr/lib/libgdiplus.so/usr/lib/gdiplus.dll
 WORKDIR /app
 COPY --from=build /app .
 COPY --from=build /source/src/Images /app/Images
-EXPOSE 5105
-EXPOSE 7152
+EXPOSE 80
+EXPOSE 443
 ENTRYPOINT ["dotnet", "Avatarize.dll"]
