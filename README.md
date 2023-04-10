@@ -11,12 +11,12 @@ Generate avatars with text input by using hashing techniques.
 
 ### API User Interface 
 You can access the Swagger API Interface here:
-http://ec2-52-6-37-108.compute-1.amazonaws.com/swagger/index.html
+http://44.204.196.91/swagger/index.html
 
 ### HTTP Request
 Make the HTTP request like this:
 ```bash
-curl --request GET --url 'http://ec2-52-6-37-108.compute-1.amazonaws.com/avatar?input=MY_INPUT_HERE'
+curl --request GET --url 'http://44.204.196.91/avatar?input=MY_INPUT_HERE'
 ```
 
 ### Front-end Application
