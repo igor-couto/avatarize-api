@@ -3,6 +3,7 @@
 [![License: AGPLv3](https://img.shields.io/badge/License-AGPLv3-blue.svg)](https://github.com/igor-couto/avatarize-api/blob/main/LICENSE)
 [![Build Badge](https://github.com/igor-couto/avatarize-api/actions/workflows/build.yml/badge.svg)](https://github.com/igor-couto/avatarize-api/actions/workflows/build.yml)
 [![Test Badge](https://github.com/igor-couto/avatarize-api/actions/workflows/tests.yml/badge.svg)](https://github.com/igor-couto/avatarize-api/actions/workflows/tests.yml)
+[![Push Image Badge](https://github.com/igor-couto/avatarize-api/actions/workflows/push-image.yml/badge.svg)](https://github.com/igor-couto/avatarize-api/actions/workflows/push-image.yml)
 [![Deploy Badge](https://github.com/igor-couto/avatarize-api/actions/workflows/deploy.yml/badge.svg)](https://github.com/igor-couto/avatarize-api/actions/workflows/deploy.yml)
 
 Generate avatars with text input by using hashing techniques.
