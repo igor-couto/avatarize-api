@@ -1,65 +1,57 @@
-﻿using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using Image = System.Drawing.Image;
+﻿using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Processing.Processors.Transforms;
 
 namespace Avatarize.Services;
 
 public class ImageService
 {
-    public virtual string GenerateBase64AvatarImage(List<Image> images, int size)
+    public virtual byte[] GenerateAvatarImage(List<Image> images, int size)
     {
         var generatedImage = MergeImages(images);
 
         generatedImage = ResizeImage(generatedImage, size, size);
 
-        var base64Image = ConvertToBase64String(generatedImage);
-
-        generatedImage.Dispose();
-
-        return base64Image;
+        return GetImageBytes(generatedImage);
     }
 
-    private Image MergeImages(List<Image> images)
-    {
-        var generatedImage = (Image) images.First().Clone();
+    private static Image MergeImages(List<Image> images)
+    {        
+        int width = images[0].Width;
+        int height = images[0].Height;
 
-        var graphics = Graphics.FromImage(generatedImage);
+        var outputImage = new Image<Rgba32>(width, height);
 
-        foreach (var image in images)
-            graphics.DrawImage(image, 0, 0, image.Width, image.Height);
+        foreach (var inputImage in images)
+        {
+            outputImage.Mutate(ctx => ctx.DrawImage(inputImage, new Point(0, 0), 1));
+        }
 
-        return generatedImage;
+        return outputImage;
     }
 
-    private string ConvertToBase64String(Image generatedImage)
+    private static Image ResizeImage(Image image, int width, int height)
     {
-        using var memoryStream = new MemoryStream();
-        generatedImage.Save(memoryStream, ImageFormat.Png);
-        var imageBytes = memoryStream.ToArray();
+        image.Mutate(x => x
+            .Resize(new ResizeOptions
+            {
+                Size = new Size(width, height),
+                Sampler = new NearestNeighborResampler(),
+                Compand = false
+            }));
 
-        return Convert.ToBase64String(imageBytes);
+        image.Metadata.HorizontalResolution = 72;
+        image.Metadata.VerticalResolution = 72;
+
+        return image;
     }
 
-    private Image ResizeImage(Image image, int width, int height)
+    private static byte[] GetImageBytes(Image image)
     {
-        var destRect = new Rectangle(0, 0, width, height);
-        var destImage = new Bitmap(width, height);
-
-        destImage.SetResolution(72, 72);
-
-        using var graphics = Graphics.FromImage(destImage);
-        
-        graphics.CompositingMode = CompositingMode.SourceCopy;
-        graphics.CompositingQuality = CompositingQuality.AssumeLinear;
-        graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-        graphics.SmoothingMode = SmoothingMode.None;
-        graphics.PixelOffsetMode = PixelOffsetMode.None;
-
-        using var wrapMode = new ImageAttributes();
-        wrapMode.SetWrapMode(WrapMode.TileFlipXY);
-        graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
-        
-        return destImage;
+        using (var memoryStream = new MemoryStream())
+        {
+            image.Save(memoryStream, new SixLabors.ImageSharp.Formats.Png.PngEncoder());
+            return memoryStream.ToArray();
+        }
     }
 }
