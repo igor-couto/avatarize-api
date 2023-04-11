@@ -15,7 +15,7 @@ http://3.234.219.64/swagger
 
 ### HTTP Request
 Make the HTTP request like this:
-```bash
+```
 curl http://3.234.219.64/avatar?input=MY_INPUT_HERE --output my_avatar.png
 ```
 
