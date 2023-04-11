@@ -17,6 +17,7 @@ ARG PFX_FILE=certificate.pfx
 ARG ASPNETCORE_Kestrel__Certificates__Default__Password
 ENV ASPNETCORE_Kestrel__Certificates__Default__Password=$ASPNETCORE_Kestrel__Certificates__Default__Password
 
+RUN apt-get update
 RUN apt-get install -y apt-utils
 RUN apt-get install -y libgdiplus
 RUN apt-get install -y libc6-dev
