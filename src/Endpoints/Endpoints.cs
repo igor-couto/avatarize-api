@@ -16,7 +16,7 @@ public static class Endpoints
             if(!validationResult.IsValid)
                 return Results.BadRequest(validationResult.ErrorMessages);
 
-            var imageBytes = Convert.FromBase64String(service.Create(request));
+            var imageBytes = service.Create(request);
             
             return Results.File(imageBytes, "image/png");
         })

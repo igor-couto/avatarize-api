@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using Avatarize.Requests;
+﻿using Avatarize.Requests;
 
 namespace Avatarize.Services;
 
@@ -16,7 +15,7 @@ public class AvatarGenerationService
         _assetsService = assetsService;
     }
 
-    public string Create(AvatarQueryParameters request)
+    public byte[] Create(AvatarQueryParameters request)
     {
         var hash = _hashService.GetHash(request.Input);
 
@@ -46,7 +45,7 @@ public class AvatarGenerationService
         if (request.Frame.HasValue)
             images.Add(_assetsService.Frame);
 
-        return _imageService.GenerateBase64AvatarImage(images, request.Size ?? 200);
+        return _imageService.GenerateAvatarImage(images, request.Size ?? 200);
     }
 
     public uint GetPartOf(uint value, int startIndex, int size)

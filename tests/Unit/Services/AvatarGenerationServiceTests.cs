@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 using NUnit.Framework;
 using FakeItEasy;
 using Avatarize.Services;
 using Avatarize.Requests;
+using SixLabors.ImageSharp;
 
 namespace UnitTests.Services;
 
@@ -34,16 +34,16 @@ public class AvatarGenerationServiceTests : BaseTests
     }
 
     [Test]
-    public void Create_ShouldCall_GenerateBase64AvatarImage()
+    public void Create_ShouldCall_GenerateAvatarImage()
     {
         var query = new AvatarQueryParameters { Input = Faker.Person.FullName };
         _avatarGenerationService.Create(query);
 
-        A.CallTo(() => _imageService.GenerateBase64AvatarImage(A<List<Image>>.Ignored, query.Size.Value)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _imageService.GenerateAvatarImage(A<List<Image>>.Ignored, query.Size.Value)).MustHaveHappenedOnceExactly();
     }
 
     [Test]
-    public void Create_ShouldCall_GenerateBase64AvatarImage_WithExpectedParameters()
+    public void Create_ShouldCall_GenerateAvatarImage_WithExpectedParameters()
     {
         var query = new AvatarQueryParameters
         {
@@ -66,7 +66,7 @@ public class AvatarGenerationServiceTests : BaseTests
         _avatarGenerationService.Create(query);
 
         A.CallTo(() => _imageService
-            .GenerateBase64AvatarImage(
+            .GenerateAvatarImage(
                 A<List<Image>>.That.Matches(x =>
                     x.Count == 7 &&
                     Compare(_assetsService.Background, x[0]) &&

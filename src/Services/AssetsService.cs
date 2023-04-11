@@ -1,6 +1,5 @@
-﻿using System.Drawing;
+﻿namespace Avatarize.Services;
 
-namespace Avatarize.Services;
 public class AssetsService : IDisposable
 {
     public List<Image> Skins { get; }
@@ -26,17 +25,13 @@ public class AssetsService : IDisposable
         LoadHairs(currentPath);
         LoadClothes(currentPath);
 
-        using var bmpBackground = new Bitmap(currentPath + "Background.png");
-        Background = new Bitmap(bmpBackground);
+        Background = Image.Load<Rgba32>(currentPath + "Background.png");
 
-        using var bmpFrame = new Bitmap(currentPath + "Frame.png");
-        Frame = new Bitmap(bmpFrame);
+        Frame = Image.Load<Rgba32>(currentPath + "Frame.png");
 
-        using var bmpGradient = new Bitmap(currentPath + "Gradient.png");
-        Gradient = new Bitmap(bmpGradient);
+        Gradient = Image.Load<Rgba32>(currentPath + "Gradient.png");
 
-        using var bmpVignette = new Bitmap(currentPath + "Vignette.png");
-        Vignette = new Bitmap(bmpVignette);
+        Vignette = Image.Load<Rgba32>(currentPath + "Vignette.png");
     }
 
     private void LoadSkins(string currentPath)
@@ -46,8 +41,8 @@ public class AssetsService : IDisposable
 
         for (var i = 1; i <= skinCount; i++)
         {
-            using var bmpTemp = new Bitmap(skinPath + i + ".png");
-            Skins.Add(new Bitmap(bmpTemp));
+            var skinImage = Image.Load<Rgba32>(skinPath + i + ".png");
+            Skins.Add(skinImage);
         }
     }
 
@@ -58,8 +53,8 @@ public class AssetsService : IDisposable
 
         for (var i = 1; i <= hairCount; i++)
         {
-            using var bmpTemp = new Bitmap(hairPath + i + ".png");
-            Hairs.Add(new Bitmap(bmpTemp));
+            var hairImage = Image.Load<Rgba32>(hairPath + i + ".png");
+            Hairs.Add(hairImage);
         }
     }
 
@@ -70,8 +65,8 @@ public class AssetsService : IDisposable
 
         for (var i = 1; i <= clothesCount; i++)
         {
-            using var bmpTemp = new Bitmap(clothesPath + i + ".png");
-            Clothes.Add(new Bitmap(bmpTemp));
+            var clothingImage = Image.Load<Rgba32>(clothesPath + i + ".png");
+            Clothes.Add(clothingImage);
         }
     }
 
