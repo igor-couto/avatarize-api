@@ -12,12 +12,12 @@ Generate avatars with text input by using hashing techniques.
 
 ### API User Interface 
 You can access the Swagger API Interface here:
-http://3.234.219.64/swagger
+http://44.197.171.238/swagger
 
 ### HTTP Request
 Make the HTTP request like this:
 ```
-curl http://3.234.219.64/avatar?input=MY_INPUT_HERE --output my_avatar.png
+curl http://44.197.171.238/avatar?input=MY_INPUT_HERE --output my_avatar.png
 ```
 
 ...or use a client like Postman or Insomnia
