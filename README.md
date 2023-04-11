@@ -16,8 +16,10 @@ http://44.204.196.91/swagger/index.html
 ### HTTP Request
 Make the HTTP request like this:
 ```bash
-curl --request GET --url 'http://44.204.196.91/avatar?input=MY_INPUT_HERE'
+curl http://44.204.196.91/avatar?input=MY_INPUT_HERE --output my_avatar.png
 ```
+
+...or use a client like Postman or Insomnia
 
 ### Front-end Application
 A complete application can be found here: [igor-couto.github.io/avatarize.io](https://igor-couto.github.io/avatarize.io)
