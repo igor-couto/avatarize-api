@@ -9,6 +9,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHealthCheck();
 builder.Services.AddVersioning();
 builder.Services.AddCache();
+builder.Services.AddCorsConfiguration();
 
 builder.Services.AddSingleton(new AssetsService());
 builder.Services.AddTransient<AvatarGenerationService>();
@@ -22,6 +23,7 @@ app.UseHealthCheckConfiguration();
 app.UseSwaggerConfiguration();
 app.UseDeveloperExceptionPage();
 app.MapEndpoints();
+app.UseCorsConfiguration();
 
 app.Run();
 
