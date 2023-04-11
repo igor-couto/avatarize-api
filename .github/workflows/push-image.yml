@@ -23,6 +23,9 @@ jobs:
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
+    
+    - name: Decode and save PFX certificate
+      run: echo "${{ secrets.PFX_BASE64 }}" | base64 --decode > certificate.pfx
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v2
@@ -30,3 +33,6 @@ jobs:
         context: .
         push: true
         tags: ${{ steps.login-ecr.outputs.registry }}/avatarize-container-repository:${{ github.sha }}
+        build-args: |
+          ASPNETCORE_Kestrel__Certificates__Default__Password=${{ secrets.CERTIFICATE_PASSWORD }}
+          PFX_FILE=certificate.pfx
