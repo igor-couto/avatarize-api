@@ -21,8 +21,8 @@ jobs:
 
       - name: Modify Dockerfile to be deployed using ARM architeture
         run: |
-          sed -i 's|FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build|FROM arm64 mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build|g' Dockerfile
-          sed -i 's|FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-alpine AS run|FROM arm64 mcr.microsoft.com/dotnet/runtime-deps:8.0-alpine AS run|g' Dockerfile
+          sed -i 's|FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build|FROM arm64/mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build|g' Dockerfile
+          sed -i 's|FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-alpine AS run|FROM arm64/mcr.microsoft.com/dotnet/runtime-deps:8.0-alpine AS run|g' Dockerfile
         shell: bash
 
       - name: Setup SSH
