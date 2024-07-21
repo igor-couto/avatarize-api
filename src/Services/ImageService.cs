@@ -1,4 +1,5 @@
 ﻿using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.Processing.Processors.Transforms;
 
@@ -48,10 +49,8 @@ public class ImageService
 
     private static byte[] GetImageBytes(Image image)
     {
-        using (var memoryStream = new MemoryStream())
-        {
-            image.Save(memoryStream, new SixLabors.ImageSharp.Formats.Png.PngEncoder());
-            return memoryStream.ToArray();
-        }
+        using var memoryStream = new MemoryStream();
+        image.Save(memoryStream, new SixLabors.ImageSharp.Formats.Png.PngEncoder());
+        return memoryStream.ToArray();
     }
 }

@@ -1,4 +1,7 @@
-﻿namespace Avatarize.Services;
+﻿using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+
+namespace Avatarize.Services;
 
 public class AssetsService : IDisposable
 {
@@ -17,9 +20,9 @@ public class AssetsService : IDisposable
     {
         var currentPath = $"{Directory.GetCurrentDirectory()}{Separator}Images{Separator}";
 
-        Skins = new List<Image>();
-        Hairs = new List<Image>();
-        Clothes = new List<Image>();
+        Skins = [];
+        Hairs = [];
+        Clothes = [];
 
         LoadSkins(currentPath);
         LoadHairs(currentPath);
@@ -85,5 +88,7 @@ public class AssetsService : IDisposable
 
         foreach (var clothe in Clothes)
             clothe.Dispose();
+
+        GC.SuppressFinalize(this);
     }
 }

@@ -1,19 +1,13 @@
 ﻿using Avatarize.Requests;
+using SixLabors.ImageSharp;
 
 namespace Avatarize.Services;
 
-public class AvatarGenerationService
+public class AvatarGenerationService(HashService hashService, ImageService imageService, AssetsService assetsService)
 {
-    private readonly HashService _hashService;
-    private readonly ImageService _imageService;
-    private readonly AssetsService _assetsService;
-
-    public AvatarGenerationService(HashService hashService, ImageService imageService, AssetsService assetsService)
-    {
-        _hashService = hashService;
-        _imageService = imageService;
-        _assetsService = assetsService;
-    }
+    private readonly HashService _hashService = hashService;
+    private readonly ImageService _imageService = imageService;
+    private readonly AssetsService _assetsService = assetsService;
 
     public byte[] Create(AvatarQueryParameters request)
     {
