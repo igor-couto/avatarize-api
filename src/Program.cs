@@ -18,7 +18,7 @@ builder.Services.AddTransient<ImageService>();
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseHealthCheckConfiguration();
 app.UseSwaggerConfiguration();
 app.UseDeveloperExceptionPage();
