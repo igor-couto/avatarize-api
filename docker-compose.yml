@@ -3,9 +3,9 @@ services:
     container_name: avatarize-api
     build:
       context: .
-      dockerfile: ./src/Dockerfile
+      dockerfile: ./Dockerfile
     environment:
       ASPNETCORE_ENVIRONMENT: Development
     ports:
-      - "5105:5105"
-      - "7152:7152"
+      - "50002:50002"
+      - "50003:50003"

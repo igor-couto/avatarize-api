@@ -1,36 +1,45 @@
 ﻿# Build Stage
-FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
 WORKDIR /source
 COPY . .
-RUN dotnet restore "./src/Avatarize.csproj" --disable-parallel --runtime linux-musl-x64
-RUN dotnet publish "./src/Avatarize.csproj" -c Release -o /app --no-restore --runtime linux-musl-x64 --self-contained true
+
+# Restore dependencies
+RUN dotnet restore "./src/Avatarize.csproj" --disable-parallel --runtime linux-musl-arm64
+
+# Publish the application
+RUN dotnet publish "./src/Avatarize.csproj" -c Release -o /app --no-restore --runtime linux-musl-arm64 --self-contained true
+
+# Create and export certificates
+RUN apk add --no-cache openssl && \
+    mkdir /tmp/certs && \
+    openssl req -x509 -newkey rsa:4096 -keyout /tmp/certs/certificate.key -out /tmp/certs/certificate.crt -days 365 -nodes -subj "/CN=localhost" && \
+    openssl pkcs12 -export -out /tmp/certs/certificate.pfx -inkey /tmp/certs/certificate.key -in /tmp/certs/certificate.crt -passout pass:password
 
 # Serve Stage
-FROM mcr.microsoft.com/dotnet/runtime-deps:7.0-alpine AS run
+FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-alpine AS run
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
-ENV ASPNETCORE_URLS="http://+:80;https://+:443"
-ENV ASPNETCORE_HTTPS_PORT=443
-ENV ASPNETCORE_HTTP_PORT=80
-ENV ASPNETCORE_Kestrel__Certificates__Default__Path="/https/certificate.pfx"
+ENV ASPNETCORE_URLS="http://+:50002;https://+:50003"
+ENV ASPNETCORE_HTTPS_PORT=50003
+ENV ASPNETCORE_HTTP_PORT=50002
 
-ARG PFX_FILE=certificate.pfx
-ARG ASPNETCORE_Kestrel__Certificates__Default__Password
-ENV ASPNETCORE_Kestrel__Certificates__Default__Password=$ASPNETCORE_Kestrel__Certificates__Default__Password
+# Install necessary packages
+RUN apk upgrade --no-cache && \
+    apk add --no-cache icu-libs libgdiplus
 
-RUN apk upgrade musl
-RUN apk add icu-dev
-RUN apk add musl-dev
-RUN apk add libgdiplus
-
-RUN adduser --disabled-password \
-  --home /app \
-  --gecos '' dotnetuser && chown -R dotnetuser /app
-USER dotnetuser
+# Create a non-root user
+RUN adduser -D -h /app dotnetuser && chown -R dotnetuser /app
 
 WORKDIR /app
 COPY --from=build /app .
 COPY --from=build /source/src/Images /app/Images
-COPY $PFX_FILE /https/
-EXPOSE 80
-EXPOSE 443
+COPY --from=build /tmp/certs /app/certs
+RUN chmod 644 /app/certs/certificate.pfx
+USER dotnetuser
+
+EXPOSE 50002 50003
+
+# Set environment variables for the certificate
+ENV ASPNETCORE_Kestrel__Certificates__Default__Password="password"
+ENV ASPNETCORE_Kestrel__Certificates__Default__Path="/app/certs/certificate.pfx"
+
 ENTRYPOINT ["./Avatarize"]

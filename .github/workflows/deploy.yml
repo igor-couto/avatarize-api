@@ -1,4 +1,4 @@
-name: Deploy to AWS EC2
+name: Deploy to Server
 
 on:
   push:
@@ -17,16 +17,34 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Deploy to EC2
-        uses: easingthemes/ssh-deploy@main
+      - name: Modify Dockerfile to be deployed using ARM architeture
+        run: |
+          sed -i 's|FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build|FROM arm64 mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build|g' Dockerfile
+          sed -i 's|FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-alpine AS run|FROM arm64 mcr.microsoft.com/dotnet/runtime-deps:8.0-alpine AS run|g' Dockerfile
+        shell: bash
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+        shell: bash
+
+      - name: Deploy to Server
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          REMOTE_HOST: ${{ secrets.HOST_DNS }}
-          REMOTE_USER: ${{ secrets.USERNAME }}
-          SCRIPT_AFTER: |
-            dotnet restore "./src/Avatarize.csproj" --disable-parallel
-            dotnet publish "./src/Avatarize.csproj" -c Release -o /app --no-restore --self-contained true --os linux
-            export ASPNETCORE_URLS=http://*:80 
-            dotnet "./src/app/Avatarize.dll"
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+        run: |
+          ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "mkdir -p /home/$SSH_USER/apps/avatarize-api"
+          scp -P $SSH_PORT -r ./* $SSH_USER@$SSH_HOST:/home/$SSH_USER/apps/avatarize-api
+          ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "
+            cd /home/$SSH_USER/apps/avatarize-api &&
+            sudo docker compose down &&
+            sudo docker compose build &&
+            sudo docker compose up -d
+          "
+        shell: bash
