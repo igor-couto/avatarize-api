@@ -10,7 +10,7 @@ RUN dotnet restore "./src/Avatarize.csproj" --disable-parallel --runtime linux-a
 RUN dotnet publish "./src/Avatarize.csproj" -c Release -o /app --no-restore --runtime linux-arm64 --self-contained true
 
 # Create and export certificates
-RUN apk add --no-cache openssl && \
+RUN apt-get update && apt-get install -y openssl && \
     mkdir /tmp/certs && \
     openssl req -x509 -newkey rsa:4096 -keyout /tmp/certs/certificate.key -out /tmp/certs/certificate.crt -days 365 -nodes -subj "/CN=localhost" && \
     openssl pkcs12 -export -out /tmp/certs/certificate.pfx -inkey /tmp/certs/certificate.key -in /tmp/certs/certificate.crt -passout pass:password
@@ -23,10 +23,10 @@ ENV ASPNETCORE_HTTPS_PORT=50003
 ENV ASPNETCORE_HTTP_PORT=50002
 
 # Install necessary packages
-RUN apk upgrade --no-cache && apk add --no-cache icu-libs libgdiplus
+RUN apt-get update && apt-get upgrade -y && apt-get install -y icu-devtools libgdiplus
 
 # Create a non-root user
-RUN adduser -D -h /app dotnetuser && chown -R dotnetuser /app
+RUN adduser --disabled-password --home /app dotnetuser && chown -R dotnetuser /app
 
 WORKDIR /app
 COPY --from=build /app .
