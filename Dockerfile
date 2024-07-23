@@ -1,5 +1,5 @@
 ﻿# Build Stage
-FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
 WORKDIR /source
 COPY . .
 
