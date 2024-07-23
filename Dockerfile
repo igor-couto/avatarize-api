@@ -4,10 +4,10 @@ WORKDIR /source
 COPY . .
 
 # Restore dependencies
-RUN dotnet restore "./src/Avatarize.csproj" --disable-parallel --runtime linux-musl-arm64
+RUN dotnet restore "./src/Avatarize.csproj" --disable-parallel --runtime linux-arm64
 
 # Publish the application
-RUN dotnet publish "./src/Avatarize.csproj" -c Release -o /app --no-restore --runtime linux-musl-arm64 --self-contained true
+RUN dotnet publish "./src/Avatarize.csproj" -c Release -o /app --no-restore --runtime linux-arm64 --self-contained true
 
 # Create and export certificates
 RUN apk add --no-cache openssl && \
@@ -23,8 +23,7 @@ ENV ASPNETCORE_HTTPS_PORT=50003
 ENV ASPNETCORE_HTTP_PORT=50002
 
 # Install necessary packages
-RUN apk upgrade --no-cache && \
-    apk add --no-cache icu-libs libgdiplus
+RUN apk upgrade --no-cache && apk add --no-cache icu-libs libgdiplus
 
 # Create a non-root user
 RUN adduser -D -h /app dotnetuser && chown -R dotnetuser /app
