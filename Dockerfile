@@ -1,5 +1,5 @@
 ﻿# Build Stage
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy-arm64v8 AS build
 WORKDIR /source
 COPY . .
 
@@ -16,7 +16,7 @@ RUN apk add --no-cache openssl && \
     openssl pkcs12 -export -out /tmp/certs/certificate.pfx -inkey /tmp/certs/certificate.key -in /tmp/certs/certificate.crt -passout pass:password
 
 # Serve Stage
-FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-alpine AS run
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-jammy-arm64v8 AS run
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 ENV ASPNETCORE_URLS="http://+:50002;https://+:50003"
 ENV ASPNETCORE_HTTPS_PORT=50003
