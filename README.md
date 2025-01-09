@@ -9,14 +9,18 @@ Generate avatars with text input by using hashing techniques.
 
 ## Try it
 
+### Live
+
+You can see the project running here: https://avatarize.io
+
 ### API User Interface 
 You can access the Swagger API Interface here:
-http://44.197.171.238/swagger
+https://igorcouto.com/projects/avatarize/api/swagger
 
 ### HTTP Request
 Make the HTTP request like this:
 ```
-curl http://44.197.171.238/avatar?input=MY_INPUT_HERE --output my_avatar.png
+curl https://igorcouto.com/projects/avatarize/api/avatar?input=MY_INPUT_HERE / --output my_avatar.png
 ```
 
 ...or use a client like Postman or Insomnia
