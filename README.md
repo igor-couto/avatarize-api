@@ -26,6 +26,10 @@ A complete application can be found here: [igor-couto.github.io/avatarize.io](ht
 
 ![](https://github.com/igor-couto/images/blob/main/avatarize/screenshot.png)
 
+## Contributing
+
+Feel free to open issues or submit pull requests to improve the project. Contributions are welcome!
+
 ## Author
 
 * **Igor Couto** - [igor.fcouto@gmail.com](mailto:igor.fcouto@gmail.com)
