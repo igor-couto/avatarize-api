@@ -4,13 +4,23 @@ on: push
 
 jobs:
 
-  Build:
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout GitHub Action
-        uses: actions/checkout@main
+      - name: 🛠️ Checkout Repository
+        uses: actions/checkout@v4
 
-      - name: Build Projects
+      - name: ⚙️ Setup .NET 9 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.x
+          
+      - name: 📦 Restore Dependencies
         run: |
-          echo github.ref
-          dotnet build src/Avatarize.csproj
+          dotnet restore src/
+          
+      - name: 🏗️ Build Project
+        run: | 
+          echo "${{ github.ref }}"
+          dotnet build src/ --no-restore
