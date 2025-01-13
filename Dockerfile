@@ -1,32 +1,19 @@
 ﻿# Build Stage
-FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy-arm64v8 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0-alpine3.20-arm64v8 AS build
 WORKDIR /source
+RUN apk add --no-cache icu-libs
 COPY . .
-
-# Restore dependencies
-RUN dotnet restore "./src/Avatarize.csproj" --disable-parallel --runtime linux-arm64
-
-# Publish the application
-RUN dotnet publish "./src/Avatarize.csproj" -c Release -o /app --no-restore --runtime linux-arm64 --self-contained true
-
-# Create and export certificates
-RUN apt-get update && apt-get install -y openssl && \
-    mkdir /tmp/certs && \
-    openssl req -x509 -newkey rsa:4096 -keyout /tmp/certs/certificate.key -out /tmp/certs/certificate.crt -days 365 -nodes -subj "/CN=localhost" && \
-    openssl pkcs12 -export -out /tmp/certs/certificate.pfx -inkey /tmp/certs/certificate.key -in /tmp/certs/certificate.crt -passout pass:password
+RUN dotnet restore "./src/Avatarize.csproj" --disable-parallel --runtime linux-musl-arm64
+RUN dotnet publish "./src/Avatarize.csproj" -c Release -o /app --no-restore --runtime linux-musl-arm64 --self-contained true
 
 # Serve Stage
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-jammy-arm64v8 AS run
+FROM mcr.microsoft.com/dotnet/aspnet:9.0-alpine3.20-arm64v8 AS run
+RUN apk add --no-cache icu-libs
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
-ENV ASPNETCORE_URLS="http://+:50002;https://+:50003"
-ENV ASPNETCORE_HTTPS_PORT=50003
+ENV ASPNETCORE_URLS="http://+:50002"
 ENV ASPNETCORE_HTTP_PORT=50002
 
-# Install necessary packages
-RUN apt-get update && apt-get upgrade -y && apt-get install -y icu-devtools libgdiplus
-
-# Create a non-root user
-RUN adduser --disabled-password --home /app dotnetuser && chown -R dotnetuser /app
+RUN apk upgrade --no-cache && apk add --no-cache icu-devtools libgdiplus
 
 WORKDIR /app
 COPY --from=build /app .
@@ -35,10 +22,8 @@ COPY --from=build /tmp/certs /app/certs
 RUN chmod 644 /app/certs/certificate.pfx
 USER dotnetuser
 
-EXPOSE 50002 50003
+EXPOSE 50002
 
-# Set environment variables for the certificate
-ENV ASPNETCORE_Kestrel__Certificates__Default__Password="password"
 ENV ASPNETCORE_Kestrel__Certificates__Default__Path="/app/certs/certificate.pfx"
 
 ENTRYPOINT ["./Avatarize"]
