@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+using Asp.Versioning;
 
 namespace Avatarize.Configuration;
 
