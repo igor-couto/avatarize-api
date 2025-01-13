@@ -7,16 +7,22 @@ jobs:
   Build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout GitHub Action
-        uses: actions/checkout@main
 
-      - name: Unit Testing
+      - name: 🛠️ Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup .NET 9 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.x
+
+      - name: 🔬 Unit Testing
         run: |
           echo github.ref
           cd tests/Unit/
           dotnet test
 
-      - name: Integration Testing
+      - name: 🧪 Integration Testing
         run: |
           echo github.ref
           cd tests/Functional/
