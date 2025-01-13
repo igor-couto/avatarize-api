@@ -19,11 +19,7 @@ WORKDIR /app
 COPY --from=build /app .
 COPY --from=build /source/src/Images /app/Images
 COPY --from=build /tmp/certs /app/certs
-RUN chmod 644 /app/certs/certificate.pfx
-USER dotnetuser
 
 EXPOSE 50002
-
-ENV ASPNETCORE_Kestrel__Certificates__Default__Path="/app/certs/certificate.pfx"
 
 ENTRYPOINT ["./Avatarize"]
