@@ -18,7 +18,6 @@ RUN apk upgrade --no-cache && apk add --no-cache icu-devtools libgdiplus
 WORKDIR /app
 COPY --from=build /app .
 COPY --from=build /source/src/Images /app/Images
-COPY --from=build /tmp/certs /app/certs
 
 EXPOSE 50002
 
