@@ -1,0 +1,80 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+    paths-ignore:
+      - 'README.md'
+      - '.gitignore'
+      - '.githooks/'
+      - 'tests/**'
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛠️ Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup .NET 9 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.x
+          
+      - name: 📦 Restore Dependencies
+        run: |
+          dotnet restore src/
+          
+      - name: 🏗️ Build Project
+        run: | 
+          echo "${{ github.ref }}"
+          dotnet build src/ --no-restore
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: 🛠️ Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup .NET 9 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.x
+
+      - name: 🔬 Unit Testing
+        run: |
+          echo github.ref
+          cd tests/Unit/
+          dotnet test
+
+      - name: 🧪 Integration Testing
+        run: |
+          echo github.ref
+          cd tests/Functional/
+          dotnet test
+
+  docker_image:
+    name: Build and Push Docker Image
+    needs: build
+    runs-on: self-hosted
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: 🛠️ Check out source
+        uses: actions/checkout@v4
+
+      - name: 🔐 Log in to container registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: 🚀 Build and push Docker image for ARM64
+        run: |
+          docker build \
+            --platform linux/arm64 \
+            -f Dockerfile \
+            -t ghcr.io/igor-couto/avatarize-api:latest \
+            --push \
+            .
