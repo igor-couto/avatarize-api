@@ -1,49 +1,40 @@
-﻿# Serve Stage
-FROM mcr.microsoft.com/dotnet/aspnet:9.0-alpine3.20-arm64v8 AS run
+﻿# ===========================
+# Build Stage
+# ===========================
+FROM mcr.microsoft.com/dotnet/sdk:9.0-bookworm-slim-arm64v8 AS build
 
-# Install runtime dependencies
-RUN apk add --no-cache icu-libs
-
-# Install build dependencies and libgdiplus
-RUN apk add --no-cache --virtual .build-deps \
-        build-base \
-        autoconf \
-        automake \
-        libtool \
-        pkgconfig \
-        cairo-dev \
-        pango-dev \
-        giflib-dev \
-        libjpeg-turbo-dev \
-        libpng-dev \
-        freetype-dev \
-        libtiff-dev \
-        gobject-introspection-dev \
-        glib-dev \
-        mono-libs \
-        mono-dev \
+WORKDIR /source
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        icu-devtools \
+        libgdiplus \
         git \
-        bash && \
-    git clone https://github.com/mono/libgdiplus.git && \
-    cd libgdiplus && \
-    git checkout tags/6.0.0 && \
-    ./autogen.sh && \
-    make && \
-    make install && \
-    ldconfig && \
-    # Clean up
-    cd .. && \
-    rm -rf libgdiplus && \
-    apk del .build-deps
+        && rm -rf /var/lib/apt/lists/*
+COPY . .
+RUN dotnet restore "./src/Avatarize.csproj" --disable-parallel --runtime linux-arm64
+RUN dotnet publish "./src/Avatarize.csproj" \
+    -c Release \
+    -o /app \
+    --no-restore \
+    --runtime linux-arm64 \
+    --self-contained true
 
+# ===========================
+# Runtime Stage
+# ===========================
+FROM mcr.microsoft.com/dotnet/aspnet:9.0-bookworm-slim-arm64v8 AS run
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        icu-libs \
+        libgdiplus \
+        && rm -rf /var/lib/apt/lists/*
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 ENV ASPNETCORE_URLS="http://+:50002"
 ENV ASPNETCORE_HTTP_PORT=50002
-
 WORKDIR /app
 COPY --from=build /app .
 COPY --from=build /source/src/Images /app/Images
-
 EXPOSE 50002
 
 ENTRYPOINT ["./Avatarize"]
