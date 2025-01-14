@@ -115,7 +115,7 @@ jobs:
             sudo docker run -d \
               --name avatarize-api \
               --restart=always \
-              -p 50040:50040 \
+              -p 50002:50002 \
               ghcr.io/igor-couto/avatarize-api:latest
           "
         shell: bash
