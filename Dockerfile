@@ -6,7 +6,6 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0-bookworm-slim-arm64v8 AS build
 WORKDIR /source
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        icu-devtools \
         libgdiplus \
         git \
         && rm -rf /var/lib/apt/lists/*
@@ -26,10 +25,8 @@ FROM mcr.microsoft.com/dotnet/aspnet:9.0-bookworm-slim-arm64v8 AS run
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        icu-libs \
         libgdiplus \
         && rm -rf /var/lib/apt/lists/*
-ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 ENV ASPNETCORE_URLS="http://+:50002"
 ENV ASPNETCORE_HTTP_PORT=50002
 WORKDIR /app
