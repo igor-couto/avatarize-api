@@ -106,7 +106,7 @@ jobs:
             echo '${{ secrets.GITHUB_TOKEN }}' | sudo docker login ghcr.io -u '${{ github.actor }}' --password-stdin
 
             echo 'Pulling latest image...'
-            sudo docker pull ghcr.io/igor-couto/avatarize:latest
+            sudo docker pull ghcr.io/igor-couto/avatarize-api:latest
 
             echo 'Stopping and removing any old container...'
             sudo docker rm -f avatarize-api || true
@@ -116,6 +116,6 @@ jobs:
               --name avatarize-api \
               --restart=always \
               -p 50040:50040 \
-              ghcr.io/igor-couto/avatarize:latest
+              ghcr.io/igor-couto/avatarize-api:latest
           "
         shell: bash
